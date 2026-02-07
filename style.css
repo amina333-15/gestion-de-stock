@@ -1,0 +1,204 @@
+/*🎨 PALETTE DE COULEURS (variables)*/
+:root {
+    --beige-clair: #fcf8f2;
+    --beige-fond: #f5f0e6;
+    --marron-fonce: #9C5E3F;
+    --marron-hover: #6b4f2c;
+    --texte-principal: #3b2f2f;
+    --texte-titre: #6b4f2c;
+    --accent-dore: #fdd835;
+}
+/*🧱 BODY GLOBAL*/
+body {
+    padding-top: 100px;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: var(--beige-clair);
+    color: var(--texte-principal);
+    line-height: 1.6;
+}
+/*🧭 HEADER + NAVIGATION*/
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    background-color: var(--marron-fonce);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.logo-img {
+    height: 50px; /* ou 30px si tu veux encore plus petit */
+    width: auto;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-container img {
+    height: 50px;
+}
+
+.logo-container span {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.logo-title {
+    font-size: 30px; /* ou la taille que tu veux */
+    font-weight: 700;
+    margin: 0; /* important */
+    line-height: 1; /* évite que le texte déborde verticalement */
+}
+
+
+nav {
+    margin-right: 50px;
+}
+
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--accent-dore);
+}
+
+nav a.active {
+    text-decoration: underline;
+}
+/*🔤 TITRES (h1, h2, h3)*/
+h1, h2, h3 {
+    color: var(--texte-titre);
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.6rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+
+
+/**/
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+/*🦶 FOOTER*/
+footer {
+    background-color: var(--marron-fonce);
+    color: white;
+    padding: 40px 20px;
+    margin-top: 50px;
+}
+
+.footer-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-container h1 {
+    font-size: 22px;
+    margin-bottom: 25px;
+    color: var(--accent-dore);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* TABLEAU AVEC GROSSES BORDURES */
+.footer-table {
+    width: 40%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.footer-table td {
+    border: 4px solid var(--marron-fonce); /* GROSSE BORDURE invisible */
+    padding: 20px 10px;
+    text-align: center;
+}
+
+/* LIENS */
+.footer-table a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s ease;
+}
+
+.footer-table a i {
+    font-size: 20px;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.footer-table a:hover {
+    color: var(--accent-dore);
+    transform: scale(1.05);
+}
+
+.footer-table a:hover i {
+    color: var(--accent-dore);
+}
+
+
+
+/* Colonne  → alignée à gauche + ligne verticale dorée */
+.footer-table td {
+    text-align: left;
+    padding: 2px 2px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+}
+
+footer h1{
+    font-size: 25px;
+    color: var(--accent-dore);
+}
+footer p {
+    color: var(--marron-fonce);
+}
+
+.align-nav {
+    text-align: center;
+    font-size: 25px;
+    color: var(--accent-dore);
+}

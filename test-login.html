@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Login</title>
+</head>
+
+<body>
+
+<h1>Test connexion</h1>
+
+<form id="form">
+    <label for="login">Identifiant :</label>
+    <input type="text" id="login" required>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" required>
+
+    <button type="submit">Se connecter</button>
+</form>
+
+<script>
+    document.getElementById("form").addEventListener("submit", function(e) {
+        e.preventDefault(); // Empêche le rechargement
+
+        const login = document.getElementById("login").value;
+        const mdp = document.getElementById("password").value;
+
+        console.log("login =", login);
+        console.log("mdp =", mdp);
+
+        if (login === "admin" && mdp === "1234") {
+            alert("Identifiants corrects");
+            localStorage.setItem("isLogged", "true");
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Identifiants incorrects");
+        }
+    });
+</script>
+
+</body>
+</html>

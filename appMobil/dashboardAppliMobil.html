@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord - AF.ELEC</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Style mobile -->
+    <link rel="stylesheet" href="styleAppliMobil.css">
+
+    <!-- Icônes Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png">
+<style>
+
+/* ============================= */
+/* DASHBOARD — CONTENEUR GLOBAL */
+/* ============================= */
+
+.dashboard-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+    margin-top: 1.5rem;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* ============================= */
+/* CARTES STATISTIQUES — MAXI LARGEUR */
+/* ============================= */
+
+.dashboard-card {
+    width: 100%;               /* pleine largeur */
+    max-width: 500px;          /* limite visuelle élégante */
+    background-color: #ffffff;
+    border: 1px solid #e0d6c8;
+    border-radius: 14px;
+
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+.card-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-label {
+    font-size: 1.1rem;
+    color: var(--texte-principal);
+    margin: 0;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3b2f2f;
+    margin-top: 0.2rem;
+}
+
+.card-icon {
+    background-color: var(--beige-fond);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--texte-principal);
+    font-size: 1.7rem;
+    text-decoration: none;
+
+    transition: background-color 0.3s ease;
+}
+
+.card-icon:hover {
+    background-color: #e8dfd2;
+}
+
+/* ============================= */
+/* ÉTAT DU STOCK — MAXI LARGEUR */
+/* ============================= */
+
+.stock-status-mobile {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    border: 1px solid #e0d6c8;
+    border-radius: 14px;
+
+    padding: 1.4rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+    box-sizing: border-box;
+}
+
+.stock-step {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.circle {
+    width: 48px;
+    height: 48px;
+    background-color: var(--beige-fond);
+    color: var(--texte-principal);
+
+    font-weight: bold;
+    font-size: 1.3rem;
+
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.label-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 1.1rem;
+    color: #3b2f2f;
+}
+
+.value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--texte-principal);
+}
+
+.condition {
+    font-size: 0.9rem;
+    color: var(--texte-principal);
+}
+
+/* ============================= */
+/* BLOCS LISTES — MAXI LARGEUR */
+/* ============================= */
+
+.mobile-box {
+    width: 100%;
+    max-width: 500px;
+    background-color: #ffffff;
+    border: 1px solid #e0d6c8;
+    border-radius: 14px;
+
+    padding: 1.4rem;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+    box-sizing: border-box;
+}
+
+.mobile-box h3 {
+    margin: 0 0 1rem;
+    color: var(--texte-principal);
+    font-size: 1.3rem;
+}
+
+/* Liste scrollable */
+.product-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.product-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background-color: #c8b8a6;
+    border-radius: 4px;
+}
+
+/* Items */
+.product-item {
+    background-color: var(--beige-fond);
+    padding: 1rem;
+    border-radius: 10px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.product-info h4 {
+    margin: 0;
+    color: var(--texte-principal);
+    font-size: 1rem;
+}
+
+.product-info p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER MOBILE -->
+<header class="topbar">
+    <div class="topbar-content">
+        <img src="logo.png" alt="Logo">
+        <span>ELEC</span>
+    </div>
+
+    <!-- Icône menu -->
+    <div class="menu-btn" id="openMenu">
+        <i class="bi bi-list"></i>
+    </div>
+</header>
+
+<!-- MENU DÉPLIANT -->
+<div class="side-menu" id="sideMenu">
+
+    <div class="menu-header">
+        <span>Menu</span>
+        <i class="bi bi-x-lg" id="closeMenu"></i>
+    </div>
+
+    <nav class="menu-links">
+        <a href="dashboardAppliMobil.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
+        <a href="stockAppliMobil.html"><i class="bi bi-box-seam"></i> Stock</a>
+        <a href="categorieAppliMobil.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+        <a href="restockAppliMobil.html"><i class="bi bi-arrow-repeat"></i> Restock</a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i> Déconnexion</a>
+    </nav>
+
+</div>
+
+
+<section class="container">
+
+    <h1>Tableau de bord</h1>
+
+    <div class="dashboard-grid">
+
+        <!-- Produits en stock -->
+        <div class="dashboard-card">
+            <div class="card-left">
+                <p class="card-label">Produits en stock</p>
+                <p class="card-value" id="produits-stock">0</p>
+            </div>
+            <a href="stockAppliMobil.html" class="card-icon">
+                <i class="bi bi-box-seam"></i>
+            </a>
+        </div>
+
+        <!-- Nombre de catégories -->
+        <div class="dashboard-card">
+            <div class="card-left">
+                <p class="card-label">Nombre de catégories</p>
+                <p class="card-value" id="nombre-categories">0</p>
+            </div>
+            <a href="categorieAppliMobil.html" class="card-icon">
+                <i class="bi bi-tags"></i>
+            </a>
+        </div>
+
+ <!-- Total transactions -->
+        <div class="dashboard-card">
+            <div class="card-left">
+                <p class="card-label">Total des transactions</p>
+                <p class="card-value" id="total-transactions">0</p>
+            </div>
+            <a href="restockAppliMobil.html" class="card-icon">
+                <i class="bi bi-arrow-repeat"></i>
+            </a>
+        </div>
+
+        <!-- État du stock -->
+        <div class="stock-status-mobile">
+
+            <div class="stock-step">
+                <div class="circle">1</div>
+                <div class="label-block">
+                    <span class="label">Stock normal</span>
+                    <span class="value" id="nb-stock-normal">0</span>
+                    <span class="condition">≥ 5</span>
+                </div>
+            </div>
+
+            <div class="stock-step">
+                <div class="circle">2</div>
+                <div class="label-block">
+                    <span class="label">Stock faible</span>
+                    <span class="value" id="nb-stock-faible">0</span>
+                    <span class="condition">≤ 2</span>
+                </div>
+            </div>
+
+            <div class="stock-step">
+                <div class="circle">3</div>
+                <div class="label-block">
+                    <span class="label">Rupture</span>
+                    <span class="value" id="nb-stock-rupture">0</span>
+                    <span class="condition">= 0</span>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- Dernière ajout -->
+        <div class="mobile-box">
+            <h3>Dernière ajout au stock</h3>
+            <div id="derniere-ajout" class="product-list"></div>
+        </div>
+
+        <!-- Produits critiques -->
+        <div class="mobile-box">
+            <h3>Produits critiques</h3>
+            <div id="produits-critiques" class="product-list"></div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER MOBILE -->
+<footer>
+    <div class="footer-nav">
+        <a href="dashboardAppliMobil.html"><i class="bi bi-speedometer2"></i></a>
+        <a href="stockAppliMobil.html"><i class="bi bi-box-seam"></i></a>
+        <a href="categorieAppliMobil.html"><i class="bi bi-tags-fill"></i></a>
+        <a href="restockAppliMobil.html"><i class="bi bi-arrow-repeat"></i></a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
+    </div>
+</footer>
+
+<script>
+    /* Sécurité */
+    if (localStorage.getItem("isLogged") !== "true") {
+        window.location.href = "indexAppliMobil.html";
+    }
+
+    function logout() {
+        alert("Vous êtes déconnecté");
+        localStorage.removeItem("isLogged");
+        window.location.href = "indexAppliMobil.html";
+    }
+
+    /* Données */
+    let data = JSON.parse(localStorage.getItem("af_elec_data")) || { stock: [], categories: [], transactions: [] };
+
+    /* Calculs */
+    document.getElementById("produits-stock").textContent = data.stock.length;
+    document.getElementById("nombre-categories").textContent = new Set(data.stock.map(p => p.categorie)).size;
+    document.getElementById("total-transactions").textContent = data.transactions.length;
+
+    document.getElementById("nb-stock-normal").textContent = data.stock.filter(p => p.qte >= 5).length;
+    document.getElementById("nb-stock-faible").textContent = data.stock.filter(p => p.qte > 0 && p.qte <= 2).length;
+    document.getElementById("nb-stock-rupture").textContent = data.stock.filter(p => p.qte === 0).length;
+
+    /* Produits critiques */
+    const critiques = data.stock.filter(p => p.qte <= 2);
+    const critiquesContainer = document.getElementById("produits-critiques");
+    critiquesContainer.innerHTML = critiques.map(p => `
+        <div class="product-item">
+            <div class="product-info">
+                <h4>${p.nom}</h4>
+                <p>Quantité : ${p.qte}</p>
+            </div>
+        </div>
+    `).join("");
+
+    /* Derniers ajouts */
+    const last10 = [...data.transactions].slice(-10).reverse();
+    const ajoutContainer = document.getElementById("derniere-ajout");
+    ajoutContainer.innerHTML = last10.length
+        ? last10.map(t => `
+            <div class="product-item">
+                <div class="product-info">
+                    <h4>${t.produit}</h4>
+                    <p>Catégorie : ${t.categorie}</p>
+                    <p>Ajout : +${t.quantite}</p>
+                    <p>Date : ${t.date}</p>
+                </div>
+            </div>
+        `).join("")
+        : "<p>Aucune transaction enregistrée.</p>";
+
+/* Header et menu dépliant */
+    const openMenu = document.getElementById("openMenu");
+    const closeMenu = document.getElementById("closeMenu");
+    const sideMenu = document.getElementById("sideMenu");
+
+    openMenu.addEventListener("click", () => {
+        sideMenu.classList.add("open");
+    });
+
+    closeMenu.addEventListener("click", () => {
+        sideMenu.classList.remove("open");
+    });
+
+</script>
+
+</body>
+</html>

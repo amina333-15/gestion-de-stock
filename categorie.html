@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Catégories - AF.ELEC</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- ICON LOGO ENTREPRISE -->
+    <link rel="icon" href="logo.png">
+
+    <style>
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        /* ------------------------------
+           LISTE DES CATÉGORIES
+        ------------------------------ */
+
+        .categories-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .categorie-item {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid #e0d6c8;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .categorie-item:hover {
+            background-color: #f5efe6;
+            transform: translateX(4px);
+        }
+
+        .cat-desc {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #6b4f2c;
+        }
+
+        /* ------------------------------
+           BOUTON FLOTTANT AJOUTER
+        ------------------------------ */
+
+        .floating-add-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #9C5E3F;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 3000;
+        }
+
+        .floating-add-btn:hover {
+            background-color: #6b4f2c;
+            transform: scale(1.1);
+        }
+
+        /* ------------------------------
+           POPUP (STYLE STOCK)
+        ------------------------------ */
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5000;
+        }
+
+        .popup-box {
+            background: #fcf8f2;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .popup-box h2 {
+            margin-top: 0;
+            color: #6b4f2c;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #6b4f2c;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #9C5E3F;
+        }
+
+        /* Inputs & textarea */
+        .popup-box input,
+        .popup-box textarea {
+            width: 100%;                 /* exactement comme le bouton */
+            padding: 0.8rem;             /* même padding que le bouton */
+            margin-bottom: 1rem;
+            border: 1px solid #c8b8a6;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 1rem;
+            color: #6b4f2c;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;      /* garantit que la largeur inclut le padding */
+
+        }
+
+
+
+        .popup-box input:hover,
+        .popup-box textarea:hover {
+            border-color: #9C5E3F;
+        }
+
+        .popup-box input:focus,
+        .popup-box textarea:focus {
+            outline: none;
+            border-color: #9C5E3F;
+            box-shadow: 0 0 4px rgba(156, 94, 63, 0.4);
+        }
+
+        .popup-box textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        /* Bouton Valider */
+
+        .popup-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #9C5E3F;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .popup-submit:hover {
+            background-color: #6b4f2c;
+            transform: scale(1.05);
+        }
+
+        .popup-submit i {
+            font-size: 1.6rem;
+        }
+
+        /* Bouton supprimer */
+
+        .delete-btn-popup {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #9C5E3F;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .delete-btn-popup:hover {
+            background-color: #6b4f2c;
+            transform: scale(1.05);
+        }
+
+        .delete-btn-popup i {
+            font-size: 1.6rem;
+        }
+
+        /* Bouton modifier */
+
+        .edit-btn-popup {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #9C5E3F;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .edit-btn-popup:hover {
+            background-color: #6b4f2c;
+            transform: scale(1.05);
+        }
+
+        .edit-btn-popup i {
+            font-size: 1.6rem;
+        }
+
+        #btn-modif-zone {
+            display: none;
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .small-btn {
+            flex: 1;
+            padding: 0.6rem;
+            font-size: 1.1rem;
+        }
+
+        .small-btn i {
+            font-size: 1.4rem;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo-container">
+        <img src="logo.png" alt="Logo">
+        <span>ELEC</span>
+    </div>
+
+    <nav>
+        <a href="dashboard.html">
+            <i class="bi bi-speedometer2"></i> Tableau de bord
+        </a>
+
+        <a href="stock.html">
+            <i class="bi bi-box-seam"></i> Stock
+        </a>
+
+        <a href="categorie.html">
+            <i class="bi bi-tags-fill"></i> Catégories
+        </a>
+
+        <a href="restock.html">
+            <i class="bi bi-arrow-repeat"></i> Restock
+        </a>
+        <!-- Déconnexion -->
+        <a href="#" onclick="logout()">
+            <i class="bi bi-power"></i>
+        </a>
+
+    </nav>
+
+</header>
+
+<section class="container">
+    <h1>Catégories</h1>
+
+    <ul id="liste-categories" class="categories-list"></ul>
+</div>
+
+<button id="btn-ajouter" class="floating-add-btn">
+    <i class="bi bi-plus-lg"></i>
+</button>
+
+<div id="popup-categorie" class="popup-overlay">
+    <div class="popup-box">
+
+        <span class="close-btn" onclick="fermerPopupCategorie()">&times;</span>
+
+        <h2 id="popup-categorie-title">Ajouter une catégorie</h2>
+
+        <form id="popup-categorie-form">
+
+            <label>Nom :</label>
+            <input type="text" id="categorie-nom" required>
+
+            <label>Description :</label>
+            <textarea id="categorie-description" required></textarea>
+
+            <!-- Bouton AJOUT -->
+            <button type="submit" class="popup-submit" id="btn-ajout">
+                <i class="bi bi-check-lg"></i>
+            </button>
+
+            <!-- Boutons MODIFICATION -->
+            <div id="btn-modif-zone">
+                <button type="submit" class="edit-btn-popup small-btn">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+
+                <button type="button" id="delete-categorie-btn" class="delete-btn-popup small-btn">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+</section>
+
+<footer>
+    <div class="align-nav">
+        <h1>Navigation</h1>
+    </div>
+
+    <div class="footer-container">
+
+
+        <table class="footer-table">
+            <tr>
+                <td><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a></td>
+                <td><a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a></td>
+
+            </tr>
+
+            <tr>
+                <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
+                <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
+
+
+            </tr>
+
+
+            <tr>
+                <td>
+                    <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+                </td>
+                <td>
+                    <p>hkqsfbjqfb</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</footer>
+
+
+<script>
+
+    //Déconnexion :
+    function logout() {
+        // Popup infos déconnexion
+        alert("Vous êtes déconnecté");
+
+        // Supprime la session
+        localStorage.removeItem("isLogged");
+
+        // Redirection vers la page de connexion
+        window.location.href = "index.html";
+    }
+
+    if (
+        localStorage.getItem("isLogged") !== "true") {
+        window.location.href = "index.html";
+    }
+    ///////////////////////////
+
+
+    const defaultData = {
+        categories: [],
+        stock: []
+    };
+
+    let data = JSON.parse(localStorage.getItem("af_elec_data")) || defaultData;
+
+    function sauvegarderData() {
+        localStorage.setItem("af_elec_data", JSON.stringify(data));
+    }
+
+    function afficherCategories() {
+        const list = document.getElementById("liste-categories");
+        list.innerHTML = "";
+
+        data.categories.forEach(cat => {
+            list.innerHTML += `
+                <li class="categorie-item" onclick="ouvrirPopupCategorie('modif', ${cat.id})">
+                    <strong>${cat.nom}</strong>
+                    <p class="cat-desc">${cat.description}</p>
+                </li>
+            `;
+        });
+    }
+
+    let categorieActuelle = null;
+
+
+    function fermerPopupCategorie() {
+        document.getElementById("popup-categorie").style.display = "none";
+    }
+
+    document.getElementById("btn-ajouter").addEventListener("click", () => {
+        ouvrirPopupCategorie("ajout");
+    });
+
+    document.getElementById("popup-categorie-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const nom = document.getElementById("categorie-nom").value.trim();
+        const description = document.getElementById("categorie-description").value.trim();
+
+        if (!categorieActuelle) {
+            data.categories.push({
+                id: Date.now(),
+                nom,
+                description
+            });
+        } else {
+            categorieActuelle.nom = nom;
+            categorieActuelle.description = description;
+        }
+
+        sauvegarderData();
+        afficherCategories();
+        fermerPopupCategorie();
+    });
+
+    function supprimerCategorie(id) {
+        const cat = data.categories.find(c => c.id === id);
+
+        const utilise = data.stock.some(p => p.categorie === cat.nom);
+        if (utilise) {
+            alert("Impossible de supprimer : des produits utilisent cette catégorie.");
+            return;
+        }
+
+        data.categories = data.categories.filter(c => c.id !== id);
+
+        sauvegarderData();
+        afficherCategories();
+        fermerPopupCategorie();
+    }
+
+    afficherCategories();
+
+
+    function ouvrirPopupCategorie(mode, id = null) {
+        document.getElementById("popup-categorie").style.display = "flex";
+
+        const btnAjout = document.getElementById("btn-ajout");
+        const btnModifZone = document.getElementById("btn-modif-zone");
+
+        if (mode === "ajout") {
+            categorieActuelle = null;
+
+            document.getElementById("popup-categorie-title").textContent = "Ajouter une catégorie";
+            document.getElementById("categorie-nom").value = "";
+            document.getElementById("categorie-description").value = "";
+
+            btnAjout.style.display = "block";     // bouton valider
+            btnModifZone.style.display = "none";  // cacher modifier + supprimer
+        }
+
+        if (mode === "modif") {
+            categorieActuelle = data.categories.find(c => c.id === id);
+
+            document.getElementById("popup-categorie-title").textContent = "Modifier la catégorie";
+            document.getElementById("categorie-nom").value = categorieActuelle.nom;
+            document.getElementById("categorie-description").value = categorieActuelle.description || "";
+
+            btnAjout.style.display = "none";      // cacher valider
+            btnModifZone.style.display = "flex";  // afficher modifier + supprimer
+
+            document.getElementById("delete-categorie-btn").onclick = () => supprimerCategorie(id);
+        }
+    }
+
+</script>
+
+
+</body>
+
+</html>
