@@ -110,22 +110,34 @@
 
 <footer><br></footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-    document.getElementById("form").addEventListener("submit", function(e) {
-        e.preventDefault(); // Empêche le rechargement
+    const supabase = supabase.createClient(
+        "https://dxqffvubixwsxnoaudat.supabase.co",
+        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
+    );
+
+    document.getElementById("form").addEventListener("submit", async function(e) {
+        e.preventDefault();
 
         const login = document.getElementById("login").value;
         const mdp = document.getElementById("password").value;
 
-        console.log("login =", login);
-        console.log("mdp =", mdp);
+        const { data, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("email", login)
+            .eq("password", mdp)
+            .single();
 
-        if (login === "admin" && mdp === "1234") {
-            localStorage.setItem("isLogged", "true");
-            window.location.href = "dashboard.html";
-        } else {
+        if (error || !data) {
             alert("Identifiants incorrects");
+            return;
         }
+
+        localStorage.setItem("isLogged", "true");
+        window.location.href = "dashboard.html";
     });
 </script>
 </body>
