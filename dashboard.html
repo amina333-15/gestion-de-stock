@@ -512,7 +512,7 @@
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔧 Connexion à Supabase */
+    /* 🔧 Connexion Supabase */
     /* ---------------------------------------------------------- */
     const client = supabase.createClient(
         "https://dxqffvubixwsxnoaudat.supabase.co",
@@ -552,35 +552,64 @@
     }
 
     /* ---------------------------------------------------------- */
+    /* 📥 Récupération des transactions */
+    /* ---------------------------------------------------------- */
+    async function chargerTransactions() {
+        const { data, error } = await client
+            .from("transactions")
+            .select("*")
+            .order("date", { ascending: false });
+
+        if (error) {
+            console.error("Erreur Supabase (transactions) :", error);
+            return [];
+        }
+
+        return data;
+    }
+
+    /* ---------------------------------------------------------- */
     /* 📊 Calculs + Affichage */
     /* ---------------------------------------------------------- */
     (async () => {
 
         const stock = await chargerStock();
         const categories = await chargerCategories();
+        const transactions = await chargerTransactions();
 
         console.log("Stock Supabase :", stock);
         console.log("Catégories Supabase :", categories);
+        console.log("Transactions Supabase :", transactions);
 
-        /* --- Nombre total de produits --- */
+        /* ------------------------------------------------------ */
+        /* 1️⃣ Nombre total de produits                           */
+        /* ------------------------------------------------------ */
         document.querySelector(".dashboard-card .card-value").textContent = stock.length;
 
-        /* --- Nombre total de catégories (table categories) --- */
+        /* ------------------------------------------------------ */
+        /* 2️⃣ Nombre total de catégories                         */
+        /* ------------------------------------------------------ */
         document.getElementById("nombre-categories").textContent = categories.length;
 
-        /* --- Total transactions (à venir) --- */
-        document.getElementById("total-transactions").textContent = "0";
+        /* ------------------------------------------------------ */
+        /* 3️⃣ Total des transactions                             */
+        /* ------------------------------------------------------ */
+        document.getElementById("total-transactions").textContent = transactions.length;
 
-        /* --- État du stock --- */
-        const stockNormal = stock.filter(p => p.qte >= 5).length;
-        const stockFaible = stock.filter(p => p.qte > 0 && p.qte <= 2).length;
+        /* ------------------------------------------------------ */
+        /* 4️⃣ État du stock                                      */
+        /* ------------------------------------------------------ */
+        const stockNormal = stock.filter(p => p.qte > 5).length;
+        const stockFaible = stock.filter(p => p.qte > 0 && p.qte <= 5).length;
         const stockRupture = stock.filter(p => p.qte === 0).length;
 
         document.getElementById("nb-stock-normal").textContent = stockNormal;
         document.getElementById("nb-stock-faible").textContent = stockFaible;
         document.getElementById("nb-stock-rupture").textContent = stockRupture;
 
-        /* --- Produits critiques --- */
+        /* ------------------------------------------------------ */
+        /* 5️⃣ Produits critiques (≤ 2)                           */
+        /* ------------------------------------------------------ */
         const produitsCritiques = stock.filter(p => p.qte <= 2);
         const produitsContainer = document.getElementById("produits-critiques");
         produitsContainer.innerHTML = "";
@@ -595,20 +624,23 @@
                 </div>`;
         });
 
-        /* --- Derniers ajouts (tri par date) --- */
+        /* ------------------------------------------------------ */
+        /* 6️⃣ Derniers ajouts (10 dernières transactions)        */
+        /* ------------------------------------------------------ */
         const derniereAjout = document.getElementById("derniere-ajout");
         derniereAjout.innerHTML = "";
 
-        const stockTrie = [...stock].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const derniers = transactions.slice(0, 10);
 
-        stockTrie.slice(0, 10).forEach(p => {
+        derniers.forEach(t => {
+            const produit = stock.find(p => p.id === t.produit_id);
+
             derniereAjout.innerHTML += `
                 <div class="product-item">
                     <div class="product-info">
-                        <h4>${p.nom}</h4>
-                        <p>Catégorie : ${p.categorie}</p>
-                        <p>Quantité : ${p.qte}</p>
-                        <p>Date : ${p.date}</p>
+                        <h4>${produit ? produit.nom : "Produit supprimé"}</h4>
+                        <p>Quantité ajoutée : +${t.quantite}</p>
+                        <p>Date : ${t.date}</p>
                     </div>
                 </div>`;
         });
