@@ -258,6 +258,259 @@
             font-size: 1.4rem;
         }
 
+
+        /* Adaptation mobile */
+        @media (max-width: 600px) {
+            .stock-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 2rem;
+            }
+
+            /* ------------------------------
+               LISTE DES CATÉGORIES
+            ------------------------------ */
+
+            .categories-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .categorie-item {
+                background-color: #ffffff;
+                padding: 15px 20px;
+                margin-bottom: 12px;
+                border-radius: 10px;
+                border: 1px solid #e0d6c8;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+
+            .categorie-item:hover {
+                background-color: #f5efe6;
+                transform: translateX(4px);
+            }
+
+            .cat-desc {
+                margin: 5px 0 0;
+                font-size: 14px;
+                color: #6b4f2c;
+            }
+
+            /* ------------------------------
+               BOUTON FLOTTANT AJOUTER
+            ------------------------------ */
+
+            .floating-add-btn {
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                background-color: #9C5E3F;
+                color: white;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+                text-decoration: none;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                z-index: 3000;
+            }
+
+            .floating-add-btn:hover {
+                background-color: #6b4f2c;
+                transform: scale(1.1);
+            }
+
+            /* ------------------------------
+               POPUP (STYLE STOCK)
+            ------------------------------ */
+
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                backdrop-filter: blur(3px);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 5000;
+            }
+
+            .popup-box {
+                background: #fcf8f2;
+                padding: 2rem;
+                border-radius: 12px;
+                width: 350px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                position: relative;
+            }
+
+            .popup-box h2 {
+                margin-top: 0;
+                color: #6b4f2c;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 1.8rem;
+                cursor: pointer;
+                color: #6b4f2c;
+                transition: 0.2s;
+            }
+
+            .close-btn:hover {
+                color: #9C5E3F;
+            }
+
+            /* Inputs & textarea */
+            .popup-box input,
+            .popup-box textarea {
+                width: 100%;                 /* exactement comme le bouton */
+                padding: 0.8rem;             /* même padding que le bouton */
+                margin-bottom: 1rem;
+                border: 1px solid #c8b8a6;
+                border-radius: 6px;
+                background-color: white;
+                font-size: 1rem;
+                color: #6b4f2c;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                box-sizing: border-box;      /* garantit que la largeur inclut le padding */
+
+            }
+
+
+
+            .popup-box input:hover,
+            .popup-box textarea:hover {
+                border-color: #9C5E3F;
+            }
+
+            .popup-box input:focus,
+            .popup-box textarea:focus {
+                outline: none;
+                border-color: #9C5E3F;
+                box-shadow: 0 0 4px rgba(156, 94, 63, 0.4);
+            }
+
+            .popup-box textarea {
+                resize: none;
+                height: 80px;
+            }
+
+            /* Bouton Valider */
+
+            .popup-submit {
+                width: 100%;
+                padding: 0.8rem;
+                background-color: #9C5E3F;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 1.3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .popup-submit:hover {
+                background-color: #6b4f2c;
+                transform: scale(1.05);
+            }
+
+            .popup-submit i {
+                font-size: 1.6rem;
+            }
+
+            /* Bouton supprimer */
+
+            .delete-btn-popup {
+                width: 100%;
+                padding: 0.8rem;
+                background-color: #9C5E3F;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 1.3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .delete-btn-popup:hover {
+                background-color: #6b4f2c;
+                transform: scale(1.05);
+            }
+
+            .delete-btn-popup i {
+                font-size: 1.6rem;
+            }
+
+            /* Bouton modifier */
+
+            .edit-btn-popup {
+                width: 100%;
+                padding: 0.8rem;
+                background-color: #9C5E3F;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 1.3rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .edit-btn-popup:hover {
+                background-color: #6b4f2c;
+                transform: scale(1.05);
+            }
+
+            .edit-btn-popup i {
+                font-size: 1.6rem;
+            }
+
+            #btn-modif-zone {
+                display: none;
+                margin-top: 1rem;
+                display: flex;
+                gap: 1rem;
+            }
+
+            .small-btn {
+                flex: 1;
+                padding: 0.6rem;
+                font-size: 1.1rem;
+            }
+
+            .small-btn i {
+                font-size: 1.4rem;
+            }
+
+        }
+
     </style>
 </head>
 

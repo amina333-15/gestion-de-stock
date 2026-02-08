@@ -271,6 +271,319 @@
             font-size: 1.6rem; /* taille de l’icône */
         }
 
+        @media (max-width: 600px) {
+            /* ============================= */
+            /* MESSAGE "Aucun produit trouvé" */
+            /* ============================= */
+
+            .no-results {
+                display: none;
+                margin-top: 2rem;
+                text-align: center;
+                color: #777;
+                line-height: 1.4;
+            }
+
+            .no-results i {
+                font-size: 50px;
+                color: var(--marron-fonce);
+                margin-bottom: 5px;
+                display: inline-block;
+            }
+
+            /* ============================= */
+            /* BARRE DE RECHERCHE — MOBILE   */
+            /* ============================= */
+
+            .search-bar-mobile {
+                width: 100%;
+                max-width: 500px;
+                display: flex;
+                gap: 0.6rem;
+                margin-bottom: 1.5rem;
+                justify-content: center;
+            }
+
+            .search-bar-mobile input {
+                flex: 1;
+                padding: 0.9rem;
+                border: 1px solid #c8b8a6;
+                border-radius: 8px;
+                background-color: #fffff;
+                font-size: 1rem;
+                color: var(--texte-principal);
+            }
+
+            .search-btn {
+                background-color: var(--marron-fonce);
+                border: none;
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                color: white;
+                font-size: 1.3rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .search-btn:hover {
+                background-color: var(--marron-hover);
+                transform: scale(1.05);
+            }
+
+            /* ============================= */
+            /* LISTE MOBILE DU STOCK         */
+            /* ============================= */
+
+            .stock-list-mobile {
+                width: 100%;
+                max-width: 500px;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stock-item {
+                background-color: #ffffff;
+                border: 1px solid #e0d6c8;
+                border-radius: 12px;
+                padding: 1.2rem;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 1rem;
+
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .stock-item:hover {
+                transform: translateX(4px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            }
+
+            .stock-info h3 {
+                margin: 0;
+                font-size: 1.2rem;
+                color: var(--texte-principal);
+            }
+
+            .stock-info p {
+                margin: 0.2rem 0;
+                font-size: 0.95rem;
+                color: #555;
+            }
+
+            /* ============================= */
+            /* BOUTONS D’ACTION              */
+            /* ============================= */
+
+            .stock-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .edit-btn,
+            .delete-btn {
+                background-color: var(--marron-fonce);
+                border: none;
+                padding: 0.6rem 0.8rem;
+                border-radius: 8px;
+                cursor: pointer;
+                color: white;
+                font-size: 1.2rem;
+                transition: background-color 0.3s ease;
+            }
+
+            .edit-btn:hover,
+            .delete-btn:hover {
+                background-color: var(--marron-hover);
+            }
+
+            /* ============================= */
+            /* BOUTON FLOTTANT AJOUT         */
+            /* ============================= */
+
+            .floating-add-btn {
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                background-color: var(--marron-fonce);
+                color: white;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                font-size: 2rem;
+                text-decoration: none;
+
+                box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                z-index: 3000;
+            }
+
+            .floating-add-btn:hover {
+                background-color: var(--marron-hover);
+                transform: scale(1.1);
+            }
+
+            /* ============================= */
+            /* POPUP                         */
+            /* ============================= */
+
+            .popup-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                backdrop-filter: blur(3px);
+
+                display: none;
+                justify-content: center;
+                align-items: center;
+
+                z-index: 5000;
+            }
+
+            .popup-box {
+                background: var(--beige-fond);
+                padding: 2rem;
+                border-radius: 12px;
+                width: 90%;
+                max-width: 380px;
+
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                position: relative;
+            }
+
+            .popup-box h2 {
+                margin-top: 0;
+                color: var(--texte-principal);
+            }
+
+            .popup-box input,
+            .popup-box select {
+                width: 100%;
+                padding: 0.9rem;
+                margin-bottom: 1rem;
+                border: 1px solid #c8b8a6;
+                border-radius: 6px;
+                background-color: white;
+                font-size: 1rem;
+                color: var(--texte-principal);
+                box-sizing: border-box;
+            }
+
+            .popup-box select {
+                appearance: none;
+                cursor: pointer;
+                background-image: url("data:image/svg+xml;utf8,<svg fill='%236b4f2c' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 18px;
+            }
+
+            .popup-submit {
+                width: 100%;
+                padding: 1rem;
+                background-color: var(--marron-fonce);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 1.3rem;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .popup-submit:hover {
+                background-color: var(--marron-hover);
+                transform: scale(1.05);
+            }
+
+            .popup-submit i {
+                font-size: 1.6rem;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 1.8rem;
+                cursor: pointer;
+                color: var(--texte-principal);
+            }
+
+            /* CONTENEUR SCROLLABLE POUR TABLEAU */
+            .table-wrapper {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* TABLEAU STOCK */
+            .tab-stock {
+                width: 100%;
+                min-width: 600px; /* garantit que les colonnes restent lisibles */
+                border-collapse: collapse;
+                background-color: #ffffff;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+
+            .tab-stock th,
+            .tab-stock td {
+                padding: 1rem;
+                text-align: left;
+                border-bottom: 1px solid #e0d6c8;
+            }
+
+            .tab-stock th {
+                background-color: #9C5E3F;
+                color: white;
+                font-weight: 600;
+            }
+
+            /* BOUTONS ACTIONS */
+            .actions button {
+                padding: 0.4rem 0.8rem;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                color: white;
+                font-size: 0.9rem;
+            }
+
+            .edit-btn {
+                background-color: #9C5E3F;
+            }
+
+            .delete-btn {
+                background-color: #9C5E3F;
+            }
+
+            .edit-btn:hover,
+            .delete-btn:hover {
+                background-color: #6b4f2c;
+            }
+
+        }
 
     </style>
 </head>
