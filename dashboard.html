@@ -313,224 +313,12 @@
         background-color: #c8b8a6;
         margin: 0.5rem 0 0.5rem 19px; /* aligné au centre du cercle */
     }
-/* Adaptation mobile */
-        @media (max-width: 600px) {
-            /* ============================= */
-            /* DASHBOARD — CONTENEUR GLOBAL */
-            /* ============================= */
 
-            .dashboard-grid {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 1.3rem;
-                margin-top: 1.5rem;
-                align-items: center;
-                box-sizing: border-box;
-            }
-
-            /* ============================= */
-            /* CARTES STATISTIQUES — MAXI LARGEUR */
-            /* ============================= */
-
-            .dashboard-card {
-                width: 100%;               /* pleine largeur */
-                max-width: 500px;          /* limite visuelle élégante */
-                background-color: #ffffff;
-                border: 1px solid #e0d6c8;
-                border-radius: 14px;
-
-                padding: 1.4rem 1.6rem;
-                box-shadow: 0 3px 8px rgba(0,0,0,0.10);
-
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-                box-sizing: border-box;
-            }
-
-            .dashboard-card:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-            }
-
-            .card-left {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .card-label {
-                font-size: 1.1rem;
-                color: var(--texte-principal);
-                margin: 0;
-            }
-
-            .card-value {
-                font-size: 2rem;
-                font-weight: bold;
-                color: #3b2f2f;
-                margin-top: 0.2rem;
-            }
-
-            .card-icon {
-                background-color: var(--beige-fond);
-                width: 52px;
-                height: 52px;
-                border-radius: 50%;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                color: var(--texte-principal);
-                font-size: 1.7rem;
-                text-decoration: none;
-
-                transition: background-color 0.3s ease;
-            }
-
-            .card-icon:hover {
-                background-color: #e8dfd2;
-            }
-
-            /* ============================= */
-            /* ÉTAT DU STOCK — MAXI LARGEUR */
-            /* ============================= */
-
-            .stock-status-mobile {
-                width: 100%;
-                max-width: 500px;
-                background-color: #ffffff;
-                border: 1px solid #e0d6c8;
-                border-radius: 14px;
-
-                padding: 1.4rem;
-                box-shadow: 0 3px 8px rgba(0,0,0,0.10);
-
-                display: flex;
-                flex-direction: column;
-                gap: 1.3rem;
-                box-sizing: border-box;
-            }
-
-            .stock-step {
-                display: flex;
-                align-items: center;
-                gap: 1.2rem;
-            }
-
-            .circle {
-                width: 48px;
-                height: 48px;
-                background-color: var(--beige-fond);
-                color: var(--texte-principal);
-
-                font-weight: bold;
-                font-size: 1.3rem;
-
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-
-            .label-block {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .label {
-                font-size: 1.1rem;
-                color: #3b2f2f;
-            }
-
-            .value {
-                font-size: 1.4rem;
-                font-weight: bold;
-                color: var(--texte-principal);
-            }
-
-            .condition {
-                font-size: 0.9rem;
-                color: var(--texte-principal);
-            }
-
-            /* ============================= */
-            /* BLOCS LISTES — MAXI LARGEUR */
-            /* ============================= */
-
-            .mobile-box {
-                width: 100%;
-                max-width: 500px;
-                background-color: #ffffff;
-                border: 1px solid #e0d6c8;
-                border-radius: 14px;
-
-                padding: 1.4rem;
-                box-shadow: 0 3px 8px rgba(0,0,0,0.10);
-                box-sizing: border-box;
-            }
-
-            .mobile-box h3 {
-                margin: 0 0 1rem;
-                color: var(--texte-principal);
-                font-size: 1.3rem;
-            }
-
-            /* Liste scrollable */
-            .product-list {
-                max-height: 200px;
-                overflow-y: auto;
-                padding-right: 0.5rem;
-            }
-
-            .product-list::-webkit-scrollbar {
-                width: 6px;
-            }
-
-            .product-list::-webkit-scrollbar-thumb {
-                background-color: #c8b8a6;
-                border-radius: 4px;
-            }
-
-            /* Items */
-            .product-item {
-                background-color: var(--beige-fond);
-                padding: 1rem;
-                border-radius: 10px;
-
-                box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-
-                display: flex;
-                flex-direction: column;
-                gap: 0.3rem;
-
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-
-            .product-item:hover {
-                transform: translateX(4px);
-                box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-            }
-
-            .product-info h4 {
-                margin: 0;
-                color: var(--texte-principal);
-                font-size: 1rem;
-            }
-
-            .product-info p {
-                margin: 0.2rem 0;
-                font-size: 0.9rem;
-                color: #555;
-            }
-        }
 
     </style>
+
+    <link rel="stylesheet" href="responsive.css">
+
 </head>
 
 <body>
@@ -861,7 +649,18 @@
         });
 
     })();
+/********************************/
+    document.querySelector("header.header").addEventListener("click", function(e) {
+        if (e.target.closest("header.header::after")) return;
+    });
+
+    document.querySelector("header.header").addEventListener("click", function(e) {
+        if (e.offsetX > window.innerWidth - 80) {
+            document.querySelector("nav").classList.toggle("open");
+        }
+    });
 </script>
+
 
 </body>
 </html>

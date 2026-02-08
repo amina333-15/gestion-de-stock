@@ -1,0 +1,242 @@
+/**********************************************************/
+/* ===================== PAGE CONNEXION ================== */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    /* HEADER — Connexion uniquement */
+    body.index-page header.header {
+        height: 65px;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+
+    body.index-page .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    body.index-page .logo-container img {
+        height: 38px !important;
+        width: auto;
+    }
+
+    body.index-page .logo-container span {
+        font-size: 22px !important;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+        line-height: 1;
+    }
+
+    /* TITRE */
+    body.index-page h1 {
+        font-size: 1.4rem !important;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    body.index-page h1 i {
+        font-size: 55px !important;
+    }
+
+    /* FORMULAIRE */
+    body.index-page form {
+        max-width: 90%;
+        margin: 10px 20px 40px;
+        padding: 1.6rem;
+    }
+
+    body.index-page form input {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    body.index-page form button {
+        padding: 0.85rem;
+        font-size: 1rem;
+    }
+
+    body.index-page footer {
+        height: 40px;
+    }
+}
+
+/**********************************************************/
+/* ======================= DASHBOARD ===================== */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    /* TITRE */
+    body:not(.index-page) h1 {
+        font-size: 1.4rem !important;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* CONTENEUR GLOBAL */
+    .container {
+        width: 92%;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    /* CARTES */
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .dashboard-card {
+        width: 100%;
+        padding: 1.3rem;
+        border-radius: 14px;
+        background-color: white;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dashboard-card p {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+        border-radius: 50%;
+        background-color: var(--beige-fond);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* PRODUITS CRITIQUES */
+    .product-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 12px;
+        border-radius: 12px;
+        background-color: var(--beige-fond);
+        margin-bottom: 10px;
+    }
+
+    /* TABLEAU */
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        margin-top: 15px;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    footer {
+        height: 40px;
+    }
+}
+
+/**********************************************************/
+/* ================= HEADER + MENU MOBILE ================ */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    /* HEADER — toutes les pages sauf connexion */
+    body:not(.index-page) header.header {
+        height: 65px;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    body:not(.index-page) .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    body:not(.index-page) .logo-container img {
+        height: 38px !important;
+        width: auto;
+    }
+
+    body:not(.index-page) .logo-container span {
+        font-size: 22px !important;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+        line-height: 1;
+    }
+
+    /* Cacher le menu desktop */
+    body:not(.index-page) nav {
+        display: none;
+    }
+
+    /* Bouton menu mobile */
+    body:not(.index-page) header.header::after {
+        content: "\f479"; /* icône bi-list */
+        font-family: "bootstrap-icons";
+        font-size: 32px;
+        color: white;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* MENU LATÉRAL */
+    body:not(.index-page) nav {
+        position: fixed;
+        top: 0;
+        right: -260px;
+        width: 260px;
+        height: 100vh;
+        background-color: var(--beige-fond);
+        box-shadow: -3px 0 12px rgba(0,0,0,0.15);
+        padding-top: 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: right 0.35s ease;
+        z-index: 9999;
+    }
+
+    body:not(.index-page) nav.open {
+        right: 0;
+    }
+
+    body:not(.index-page) nav a {
+        font-size: 1.2rem;
+        padding: 12px 20px;
+        border-radius: 10px;
+        background-color: white;
+        margin: 0 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        color: var(--texte-principal);
+        text-decoration: none;
+    }
+
+    body:not(.index-page) nav a i {
+        margin-right: 10px;
+    }
+}
