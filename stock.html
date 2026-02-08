@@ -391,105 +391,135 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-    //Déconnexion :
+    /* ---------------------------------------------------------- */
+    /* 🔐 Sécurité */
+    /* ---------------------------------------------------------- */
+    if (localStorage.getItem("isLogged") !== "true") {
+        window.location.href = "index.html";
+    }
+
     function logout() {
-        // Popup infos déconnexion
         alert("Vous êtes déconnecté");
-
-        // Supprime la session
         localStorage.removeItem("isLogged");
-
-        // Redirection vers la page de connexion
         window.location.href = "index.html";
     }
 
-    if (
-        localStorage.getItem("isLogged") !== "true") {
-        window.location.href = "index.html";
-    }
-    /////////////////////////////////////////////////////////////
+    /* ---------------------------------------------------------- */
+    /* 🔧 Connexion Supabase */
+    /* ---------------------------------------------------------- */
+    const client = supabase.createClient(
+        "https://dxqffvubixwsxnoaudat.supabase.co",
+        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
+    );
 
-    const defaultData = {
-        categories: [
-            { id: 1, nom: "Électricité" },
-            { id: 2, nom: "Câblage" },
-            { id: 3, nom: "Outillage" },
-            { id: 4, nom: "Sécurité" }
-        ],
+    /* ---------------------------------------------------------- */
+    /* 📥 Charger le stock depuis Supabase */
+    /* ---------------------------------------------------------- */
+    async function chargerStock() {
+        const { data, error } = await client
+            .from("stock")
+            .select("*")
+            .order("id", { ascending: true });
 
-        stock: [
-            { id: 1, nom: "Disjoncteur 16A", categorie: "Électricité", qte: 12, date: "2026-01-15" },
-            { id: 2, nom: "Prise murale", categorie: "Électricité", qte: 3, date: "2026-01-14" },
-            { id: 3, nom: "Câble 2.5mm", categorie: "Câblage", qte: 25, date: "2026-01-10" }
-        ]
-    };
+        if (error) {
+            console.error("Erreur chargement stock :", error);
+            return [];
+        }
 
-    let data = JSON.parse(localStorage.getItem("af_elec_data")) || defaultData;
-
-    function sauvegarderData() {
-        localStorage.setItem("af_elec_data", JSON.stringify(data));
+        return data;
     }
 
-    /* 🔽 Charger les catégories dans le SELECT */
-    function chargerCategories() {
+    /* ---------------------------------------------------------- */
+    /* 📥 Charger les catégories (si tu veux une table categories) */
+    /* ---------------------------------------------------------- */
+    async function chargerCategories() {
         const select = document.getElementById("popup-categorie");
         select.innerHTML = "";
 
-        data.categories.forEach(cat => {
+        // Si tu veux une table Supabase "categories", remplace ici :
+        const categories = ["Électricité", "Câblage", "Outillage", "Sécurité"];
+
+        categories.forEach(cat => {
             const option = document.createElement("option");
-            option.value = cat.nom;
-            option.textContent = cat.nom;
+            option.value = cat;
+            option.textContent = cat;
             select.appendChild(option);
         });
     }
 
-    let mode = "ajout";
-    let produitEnEdition = null;
-
-    /* 🔽 Afficher le tableau du stock */
-    function afficherStock() {
+    /* ---------------------------------------------------------- */
+    /* 🖥️ Afficher le tableau */
+    /* ---------------------------------------------------------- */
+    async function afficherStock() {
+        const stock = await chargerStock();
         const table = document.getElementById("stock-table");
+        const noResults = document.getElementById("no-results-stock");
+
         table.innerHTML = "";
 
-        data.stock.forEach(item => {
+        if (stock.length === 0) {
+            noResults.style.display = "block";
+            return;
+        }
+
+        noResults.style.display = "none";
+
+        stock.forEach(item => {
             table.innerHTML += `
-                <tr>
-                    <td>${item.nom}</td>
-                    <td>${item.categorie}</td>
-                    <td>${item.qte}</td>
-                    <td>${item.date}</td>
-                    <td class="actions">
-                        <button class="edit-btn" onclick="ouvrirPopup('modif', ${item.id})">
+            <tr>
+                <td>${item.nom}</td>
+                <td>${item.categorie}</td>
+                <td>${item.qte}</td>
+                <td>${item.date}</td>
+                <td class="actions">
+                    <button class="edit-btn" onclick="ouvrirPopup('modif', ${item.id})">
                         <i class="bi bi-pencil-square"></i>
-</button>
-                        <button class="delete-btn" onclick="supprimerProduit(${item.id})">
+                    </button>
+                    <button class="delete-btn" onclick="supprimerProduit(${item.id})">
                         <i class="bi bi-trash-fill"></i>
-</button>
-                    </td>
-                </tr>
-            `;
+                    </button>
+                </td>
+            </tr>
+        `;
         });
     }
 
-    /* 🔽 Supprimer un produit */
-    function supprimerProduit(id) {
-        data.stock = data.stock.filter(item => item.id !== id);
-        sauvegarderData();
+    /* ---------------------------------------------------------- */
+    /* 🗑️ Supprimer un produit */
+    /* ---------------------------------------------------------- */
+    async function supprimerProduit(id) {
+        const { error } = await client
+            .from("stock")
+            .delete()
+            .eq("id", id);
+
+        if (error) {
+            console.error("Erreur suppression :", error);
+            return;
+        }
+
         afficherStock();
     }
 
-    /* 🔽 Ouvrir le popup (ajout ou modification) */
-    function ouvrirPopup(type, id = null) {
-        mode = type;
+    /* ---------------------------------------------------------- */
+    /* 🔧 Popup ajout / modification */
+    /* ---------------------------------------------------------- */
+    let mode = "ajout";
+    let produitEnEdition = null;
 
-        chargerCategories(); // recharge les catégories
+    async function ouvrirPopup(type, id = null) {
+        mode = type;
+        await chargerCategories();
 
         document.getElementById("popup-title").textContent =
             type === "ajout" ? "Ajouter un produit" : "Modifier un produit";
 
         if (type === "modif") {
-            produitEnEdition = data.stock.find(p => p.id === id);
+            const stock = await chargerStock();
+            produitEnEdition = stock.find(p => p.id === id);
 
             document.getElementById("popup-nom").value = produitEnEdition.nom;
             document.getElementById("popup-categorie").value = produitEnEdition.categorie;
@@ -502,13 +532,14 @@
         document.getElementById("popup").style.display = "flex";
     }
 
-    /* 🔽 Fermer le popup */
     function fermerPopup() {
         document.getElementById("popup").style.display = "none";
     }
 
-    /* 🔽 Soumission du formulaire (ajout ou modification) */
-    document.getElementById("popup-form").addEventListener("submit", function(e) {
+    /* ---------------------------------------------------------- */
+    /* 💾 Soumission formulaire */
+    /* ---------------------------------------------------------- */
+    document.getElementById("popup-form").addEventListener("submit", async function(e) {
         e.preventDefault();
 
         const nom = document.getElementById("popup-nom").value;
@@ -517,42 +548,37 @@
         const date = new Date().toISOString().split("T")[0];
 
         if (mode === "ajout") {
-            data.stock.push({
-                id: Date.now(),
+            await client.from("stock").insert([
+                { nom, categorie, qte, date }
+            ]);
+        } else {
+            await client.from("stock").update({
                 nom,
                 categorie,
-                qte,
-                date
-            });
-        } else {
-            produitEnEdition.nom = nom;
-            produitEnEdition.categorie = categorie;
-            produitEnEdition.qte = qte;
+                qte
+            }).eq("id", produitEnEdition.id);
         }
 
-        sauvegarderData();
-        afficherStock();
         fermerPopup();
+        afficherStock();
     });
 
-    /* 🔽 Recherche dynamique */
+    /* ---------------------------------------------------------- */
+    /* 🔍 Recherche dynamique */
+    /* ---------------------------------------------------------- */
     function normalize(str) {
-        if (!str) return "";
         return str
             .toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
     }
 
-    document.getElementById("search").addEventListener("input", function () {
+    document.getElementById("search").addEventListener("input", async function () {
         const filter = normalize(this.value);
         const rows = document.querySelectorAll("#stock-table tr");
-        let visibleCount = 0; // 🔥 compteur ajouté
+        let visibleCount = 0;
 
         rows.forEach(row => {
-            // ignorer les lignes vides
-            if (!row.children.length) return;
-
             const nom = normalize(row.children[0].textContent);
             const categorie = normalize(row.children[1].textContent);
             const quantite = normalize(row.children[2].textContent);
@@ -565,19 +591,19 @@
                 date.includes(filter);
 
             row.style.display = match ? "" : "none";
-
-            if (match) visibleCount++; // 🔥 on compte les lignes visibles
+            if (match) visibleCount++;
         });
 
-        // 🔥 Afficher / cacher le message "Aucun produit trouvé"
-        const noResults = document.getElementById("no-results-stock");
-        noResults.style.display = visibleCount === 0 ? "block" : "none";
+        document.getElementById("no-results-stock").style.display =
+            visibleCount === 0 ? "block" : "none";
     });
 
-
-    /* 🔽 Charger le tableau au démarrage */
+    /* ---------------------------------------------------------- */
+    /* 🚀 Charger au démarrage */
+    /* ---------------------------------------------------------- */
     afficherStock();
 </script>
+
 
 <a onclick="ouvrirPopup('ajout')" class="floating-add-btn">
     <i class="bi bi-plus"></i>

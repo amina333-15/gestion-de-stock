@@ -21,7 +21,6 @@
     { "id": 2, "nom": "Prise murale", "categorie": "Électricité", "qte": 3, "date": "2026-01-14" },
     { "id": 3, "nom": "Câble 2.5mm", "categorie": "Câblage", "qte": 25, "date": "2026-01-10" }
   ],
-
   "categories": [
     { "id": 1, "nom": "Électricité", "description": "Matériel électrique" },
     { "id": 2, "nom": "Câblage", "description": "Câbles et fils" }

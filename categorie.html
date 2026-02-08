@@ -262,7 +262,6 @@
 </head>
 
 <body>
-
 <header class="header">
     <div class="logo-container">
         <img src="logo.png" alt="Logo">
@@ -294,16 +293,39 @@
 
 </header>
 
+
 <section class="container">
     <h1>Catégories</h1>
 
     <ul id="liste-categories" class="categories-list"></ul>
-</div>
+</section>
 
-<button id="btn-ajouter" class="floating-add-btn">
-    <i class="bi bi-plus-lg"></i>
-</button>
+<footer>
+    <div class="align-nav">
+        <h1>Navigation</h1>
+    </div>
 
+    <div class="footer-container">
+        <table class="footer-table">
+            <tr>
+                <td><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a></td>
+                <td><a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
+                <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a></td>
+                <td><p>hkqsfbjqfb</p></td>
+            </tr>
+        </table>
+    </div>
+</footer>
+
+<!-- POPUP CATÉGORIE -->
 <div id="popup-categorie" class="popup-overlay">
     <div class="popup-box">
 
@@ -338,81 +360,96 @@
         </form>
     </div>
 </div>
-</section>
 
-<footer>
-    <div class="align-nav">
-        <h1>Navigation</h1>
-    </div>
-
-    <div class="footer-container">
+<!-- BOUTON FLOTTANT -->
+<button id="btn-ajouter" class="floating-add-btn">
+    <i class="bi bi-plus-lg"></i>
+</button>
 
 
-        <table class="footer-table">
-            <tr>
-                <td><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a></td>
-                <td><a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a></td>
 
-            </tr>
-
-            <tr>
-                <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
-                <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
-
-
-            </tr>
-
-
-            <tr>
-                <td>
-                    <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
-                </td>
-                <td>
-                    <p>hkqsfbjqfb</p>
-                </td>
-            </tr>
-        </table>
-    </div>
-</footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+    /* ---------------------------------------------------------- */
+    /* 🔐 Sécurité */
+    /* ---------------------------------------------------------- */
+    if (localStorage.getItem("isLogged") !== "true") {
+        window.location.href = "index.html";
+    }
 
-    //Déconnexion :
     function logout() {
-        // Popup infos déconnexion
         alert("Vous êtes déconnecté");
-
-        // Supprime la session
         localStorage.removeItem("isLogged");
-
-        // Redirection vers la page de connexion
         window.location.href = "index.html";
     }
 
-    if (
-        localStorage.getItem("isLogged") !== "true") {
-        window.location.href = "index.html";
+    /* ---------------------------------------------------------- */
+    /* 🔧 Connexion Supabase */
+    /* ---------------------------------------------------------- */
+    const client = supabase.createClient(
+        "https://dxqffvubixwsxnoaudat.supabase.co",
+        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
+    );
+
+    /* ---------------------------------------------------------- */
+    /* 📥 Charger les catégories */
+    /* ---------------------------------------------------------- */
+    async function chargerCategories() {
+        const { data, error } = await client
+            .from("categories")
+            .select("*")
+            .order("id", { ascending: true });
+
+        if (error) {
+            console.error("Erreur chargement catégories :", error);
+            return [];
+        }
+
+        return data;
     }
-    ///////////////////////////
 
+    /* ---------------------------------------------------------- */
+    /* 📥 Vérifier si une catégorie est utilisée dans stock */
+    /* ---------------------------------------------------------- */
+    async function categorieUtilisee(id) {
+        // 1) Récupérer le nom de la catégorie
+        const { data: cat, error: errCat } = await client
+            .from("categories")
+            .select("nom")
+            .eq("id", id)
+            .single();
 
-    const defaultData = {
-        categories: [],
-        stock: []
-    };
+        if (errCat || !cat) {
+            console.error("Erreur récupération catégorie :", errCat);
+            return false;
+        }
 
-    let data = JSON.parse(localStorage.getItem("af_elec_data")) || defaultData;
+        // 2) Vérifier si ce nom apparaît dans stock.categorie
+        const { data, error } = await client
+            .from("stock")
+            .select("id")
+            .eq("categorie", cat.nom)
+            .limit(1);
 
-    function sauvegarderData() {
-        localStorage.setItem("af_elec_data", JSON.stringify(data));
+        if (error) {
+            console.error("Erreur vérification utilisation :", error);
+            return false;
+        }
+
+        return data.length > 0;
     }
 
-    function afficherCategories() {
+    /* ---------------------------------------------------------- */
+    /* 🖥️ Afficher les catégories */
+    /* ---------------------------------------------------------- */
+    async function afficherCategories() {
         const list = document.getElementById("liste-categories");
+
+        const categories = await chargerCategories();
         list.innerHTML = "";
 
-        data.categories.forEach(cat => {
+        categories.forEach(cat => {
             list.innerHTML += `
                 <li class="categorie-item" onclick="ouvrirPopupCategorie('modif', ${cat.id})">
                     <strong>${cat.nom}</strong>
@@ -422,8 +459,10 @@
         });
     }
 
+    /* ---------------------------------------------------------- */
+    /* 🔧 Popup */
+    /* ---------------------------------------------------------- */
     let categorieActuelle = null;
-
 
     function fermerPopupCategorie() {
         document.getElementById("popup-categorie").style.display = "none";
@@ -433,48 +472,10 @@
         ouvrirPopupCategorie("ajout");
     });
 
-    document.getElementById("popup-categorie-form").addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const nom = document.getElementById("categorie-nom").value.trim();
-        const description = document.getElementById("categorie-description").value.trim();
-
-        if (!categorieActuelle) {
-            data.categories.push({
-                id: Date.now(),
-                nom,
-                description
-            });
-        } else {
-            categorieActuelle.nom = nom;
-            categorieActuelle.description = description;
-        }
-
-        sauvegarderData();
-        afficherCategories();
-        fermerPopupCategorie();
-    });
-
-    function supprimerCategorie(id) {
-        const cat = data.categories.find(c => c.id === id);
-
-        const utilise = data.stock.some(p => p.categorie === cat.nom);
-        if (utilise) {
-            alert("Impossible de supprimer : des produits utilisent cette catégorie.");
-            return;
-        }
-
-        data.categories = data.categories.filter(c => c.id !== id);
-
-        sauvegarderData();
-        afficherCategories();
-        fermerPopupCategorie();
-    }
-
-    afficherCategories();
-
-
-    function ouvrirPopupCategorie(mode, id = null) {
+    /* ---------------------------------------------------------- */
+    /* 📝 Ouvrir popup (ajout / modif) */
+    /* ---------------------------------------------------------- */
+    async function ouvrirPopupCategorie(mode, id = null) {
         document.getElementById("popup-categorie").style.display = "flex";
 
         const btnAjout = document.getElementById("btn-ajout");
@@ -487,26 +488,76 @@
             document.getElementById("categorie-nom").value = "";
             document.getElementById("categorie-description").value = "";
 
-            btnAjout.style.display = "block";     // bouton valider
-            btnModifZone.style.display = "none";  // cacher modifier + supprimer
+            btnAjout.style.display = "block";
+            btnModifZone.style.display = "none";
         }
 
         if (mode === "modif") {
-            categorieActuelle = data.categories.find(c => c.id === id);
+            const { data: cat } = await client
+                .from("categories")
+                .select("*")
+                .eq("id", id)
+                .single();
+
+            categorieActuelle = cat;
 
             document.getElementById("popup-categorie-title").textContent = "Modifier la catégorie";
-            document.getElementById("categorie-nom").value = categorieActuelle.nom;
-            document.getElementById("categorie-description").value = categorieActuelle.description || "";
+            document.getElementById("categorie-nom").value = cat.nom;
+            document.getElementById("categorie-description").value = cat.description;
 
-            btnAjout.style.display = "none";      // cacher valider
-            btnModifZone.style.display = "flex";  // afficher modifier + supprimer
+            btnAjout.style.display = "none";
+            btnModifZone.style.display = "flex";
 
             document.getElementById("delete-categorie-btn").onclick = () => supprimerCategorie(id);
         }
     }
 
-</script>
+    /* ---------------------------------------------------------- */
+    /* 💾 Soumission formulaire */
+    /* ---------------------------------------------------------- */
+    document.getElementById("popup-categorie-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
 
+        const nom = document.getElementById("categorie-nom").value.trim();
+        const description = document.getElementById("categorie-description").value.trim();
+
+        if (!categorieActuelle) {
+            // AJOUT
+            await client.from("categories").insert([{ nom, description }]);
+        } else {
+            // MODIFICATION
+            await client
+                .from("categories")
+                .update({ nom, description })
+                .eq("id", categorieActuelle.id);
+        }
+
+        afficherCategories();
+        fermerPopupCategorie();
+    });
+
+    /* ---------------------------------------------------------- */
+    /* 🗑️ Supprimer une catégorie */
+    /* ---------------------------------------------------------- */
+    async function supprimerCategorie(id) {
+        const utilise = await categorieUtilisee(id);
+
+        if (utilise) {
+            alert("Impossible de supprimer : des produits utilisent cette catégorie.");
+            return;
+        }
+
+        await client.from("categories").delete().eq("id", id);
+
+        afficherCategories();
+        fermerPopupCategorie();
+    }
+
+    /* ---------------------------------------------------------- */
+    /* 🚀 Charger au démarrage */
+    /* ---------------------------------------------------------- */
+    afficherCategories();
+</script>
 
 </body>
 

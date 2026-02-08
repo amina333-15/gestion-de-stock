@@ -113,7 +113,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-    const supabase = supabase.createClient(
+    const client = supabase.createClient(
         "https://dxqffvubixwsxnoaudat.supabase.co",
         "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
     );
@@ -124,14 +124,15 @@
         const login = document.getElementById("login").value;
         const mdp = document.getElementById("password").value;
 
-        const { data, error } = await supabase
-            .from("users")
-            .select("*")
-            .eq("email", login)
-            .eq("password", mdp)
-            .single();
+        const { data, error } = await client.auth.signInWithPassword({
+            email: login,
+            password: mdp
+        });
 
-        if (error || !data) {
+        console.log("data =", data);
+        console.log("error =", error);
+
+        if (error) {
             alert("Identifiants incorrects");
             return;
         }
@@ -140,5 +141,8 @@
         window.location.href = "dashboard.html";
     });
 </script>
+
+
+
 </body>
 </html>

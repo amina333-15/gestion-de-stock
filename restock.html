@@ -427,6 +427,11 @@
     </div>
 </footer>
 
+<button class="floating-add-btn" onclick="ouvrirPopup()">
+    <i class="bi bi-plus-lg"></i>
+</button>
+
+
 <script>
     /* ---------------------------------------------------------- */
     /* 🔐 Sécurité */
@@ -442,24 +447,64 @@
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔧 Chargement des données */
+    /* 🔧 Connexion Supabase */
     /* ---------------------------------------------------------- */
-    const defaultData = { categories: [], stock: [], transactions: [] };
-    let data = JSON.parse(localStorage.getItem("af_elec_data")) || defaultData;
-
-    // Sécurité : si transactions n'existe pas encore
-    if (!data.transactions) {
-        data.transactions = [];
-    }
-
-    function sauvegarderData() {
-        localStorage.setItem("af_elec_data", JSON.stringify(data));
-    }
+    const client = supabase.createClient(
+        "https://dxqffvubixwsxnoaudat.supabase.co",
+        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
+    );
 
     /* ---------------------------------------------------------- */
-    /* 🔧 Mode édition */
+    /* 🔧 Variables globales */
     /* ---------------------------------------------------------- */
     let transactionEnEdition = null;
+    let produitsCache = [];
+    let transactionsCache = [];
+
+    /* ---------------------------------------------------------- */
+    /* 📥 Charger les produits */
+    /* ---------------------------------------------------------- */
+    async function chargerProduits() {
+        const { data, error } = await client
+            .from("stock")
+            .select("*")
+            .order("nom", { ascending: true });
+
+        if (error) {
+            console.error("Erreur chargement stock :", error);
+            return;
+        }
+
+        produitsCache = data;
+
+        const select = document.getElementById("produit-select");
+        select.innerHTML = '<option value="">Sélectionnez un produit</option>';
+
+        data.forEach(p => {
+            const option = document.createElement("option");
+            option.value = p.id;
+            option.textContent = p.nom;
+            select.appendChild(option);
+        });
+    }
+
+    /* ---------------------------------------------------------- */
+    /* 📥 Charger les transactions */
+    /* ---------------------------------------------------------- */
+    async function chargerTransactions() {
+        const { data, error } = await client
+            .from("transactions")
+            .select("*")
+            .order("date", { ascending: false });
+
+        if (error) {
+            console.error("Erreur chargement transactions :", error);
+            return;
+        }
+
+        transactionsCache = data;
+        afficherTransactions();
+    }
 
     /* ---------------------------------------------------------- */
     /* 🔽 Afficher les transactions */
@@ -468,12 +513,12 @@
         const container = document.getElementById("transaction-items");
         container.innerHTML = "";
 
-        if (data.transactions.length === 0) {
+        if (transactionsCache.length === 0) {
             container.innerHTML = "<p>Aucune transaction pour le moment.</p>";
             return;
         }
 
-        data.transactions.forEach((t, index) => {
+        transactionsCache.forEach((t, index) => {
             container.innerHTML += `
             <div class="transaction-item" onclick="afficherDetail(${index})">
                 <strong>${t.produit}</strong><br>
@@ -484,10 +529,10 @@
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Afficher le détail d'une transaction */
+    /* 🔽 Afficher le détail */
     /* ---------------------------------------------------------- */
     function afficherDetail(index) {
-        const t = data.transactions[index];
+        const t = transactionsCache[index];
         const detail = document.getElementById("transaction-detail");
 
         detail.innerHTML = `
@@ -498,10 +543,10 @@
 
         <div class="transaction-actions">
             <button class="btn-modifier" onclick="modifierTransaction(${index})">
-            <i class="bi bi-pencil-square"></i>
+                <i class="bi bi-pencil-square"></i>
             </button>
             <button class="btn-supprimer" onclick="supprimerTransaction(${index})">
-            <i class="bi bi-trash-fill"></i>
+                <i class="bi bi-trash-fill"></i>
             </button>
         </div>
     `;
@@ -510,102 +555,81 @@
     /* ---------------------------------------------------------- */
     /* 🔽 Modifier une transaction */
     /* ---------------------------------------------------------- */
-    function modifierTransaction(index) {
+    async function modifierTransaction(index) {
         transactionEnEdition = index;
-        const t = data.transactions[index];
+        const t = transactionsCache[index];
 
-        // Ouvrir popup
         document.getElementById("popup").style.display = "flex";
-        chargerProduits();
 
-        // Retrouver le produit dans le stock
-        const produit = data.stock.find(p => p.nom === t.produit);
+        await chargerProduits(); // ⭐ nécessaire pour remplir le select
+
+        const produit = produitsCache.find(p => p.nom === t.produit);
         if (!produit) return;
 
-        // Pré-sélectionner
         document.getElementById("produit-select").value = produit.id;
-
-        // Afficher infos
         document.getElementById("info-nom").textContent = produit.nom;
         document.getElementById("info-cat").textContent = produit.categorie;
         document.getElementById("info-quantite").textContent = produit.qte;
         document.getElementById("produit-infos").style.display = "block";
 
-        // Pré-remplir quantité
         document.getElementById("quantite-ajout").value = t.quantite;
     }
 
     /* ---------------------------------------------------------- */
     /* 🔽 Supprimer une transaction */
     /* ---------------------------------------------------------- */
-    function supprimerTransaction(index) {
-        const t = data.transactions[index];
+    async function supprimerTransaction(index) {
+        const t = transactionsCache[index];
 
-        // Retrouver produit
-        const produit = data.stock.find(p => p.nom === t.produit);
+        const produit = produitsCache.find(p => p.nom === t.produit);
         if (produit) {
-            produit.qte -= t.quantite;
-            if (produit.qte < 0) produit.qte = 0;
+            const nouvelleQte = Math.max(0, produit.qte - t.quantite);
+
+            await client
+                .from("stock")
+                .update({ qte: nouvelleQte })
+                .eq("id", produit.id);
         }
 
-        // Supprimer transaction
-        data.transactions.splice(index, 1);
+        await client.from("transactions").delete().eq("id", t.id);
 
-        sauvegarderData();
-        afficherTransactions();
+        await chargerProduits();
+        await chargerTransactions();
 
         document.getElementById("transaction-detail").innerHTML =
             "Sélectionnez une transaction dans la liste à gauche";
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Ouvrir le popup */
+    /* 🔽 Ouvrir popup (AJOUT) */
     /* ---------------------------------------------------------- */
-    function ouvrirPopup() {
+    async function ouvrirPopup() {
         document.getElementById("popup").style.display = "flex";
-        chargerProduits();
+
+        await chargerProduits(); // ⭐ correction : AJOUT fonctionne enfin
+
         document.getElementById("produit-infos").style.display = "none";
         document.getElementById("quantite-ajout").value = "";
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Fermer le popup */
+    /* 🔽 Fermer popup */
     /* ---------------------------------------------------------- */
     function fermerPopup() {
         document.getElementById("popup").style.display = "none";
         transactionEnEdition = null;
     }
 
-    /* ---------------------------------------------------------- */
-    /* 🔽 Fermer en cliquant en dehors */
-    /* ---------------------------------------------------------- */
     document.getElementById("popup").addEventListener("click", function(e) {
-        if (e.target.id === "popup") {
-            fermerPopup();
-        }
+        if (e.target.id === "popup") fermerPopup();
     });
-
-    /* ---------------------------------------------------------- */
-    /* 🔽 Charger les produits */
-    /* ---------------------------------------------------------- */
-    function chargerProduits() {
-        const select = document.getElementById("produit-select");
-        select.innerHTML = '<option value="">Sélectionnez un produit</option>';
-
-        data.stock.forEach(p => {
-            const option = document.createElement("option");
-            option.value = p.id;
-            option.textContent = p.nom;
-            select.appendChild(option);
-        });
-    }
 
     /* ---------------------------------------------------------- */
     /* 🔽 Infos produit */
     /* ---------------------------------------------------------- */
     document.getElementById("produit-select").addEventListener("change", function () {
         const id = parseInt(this.value);
-        const produit = data.stock.find(p => p.id === id);
+        const produit = produitsCache.find(p => p.id === id);
 
         if (produit) {
             document.getElementById("info-nom").textContent = produit.nom;
@@ -618,66 +642,66 @@
     });
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Soumission du formulaire */
+    /* 🔽 Soumission formulaire */
     /* ---------------------------------------------------------- */
-    document.getElementById("form-transaction").addEventListener("submit", function(e) {
+    document.getElementById("form-transaction").addEventListener("submit", async function(e) {
         e.preventDefault();
 
         const id = parseInt(document.getElementById("produit-select").value);
         const ajout = parseInt(document.getElementById("quantite-ajout").value);
 
-        const produit = data.stock.find(p => p.id === id);
+        const produit = produitsCache.find(p => p.id === id);
         if (!produit || isNaN(ajout)) return;
 
         /* MODE MODIFICATION */
         if (transactionEnEdition !== null) {
-            const t = data.transactions[transactionEnEdition];
+            const t = transactionsCache[transactionEnEdition];
 
-            // Retirer ancien effet
-            const ancienProduit = data.stock.find(p => p.nom === t.produit);
+            const ancienProduit = produitsCache.find(p => p.nom === t.produit);
             if (ancienProduit) {
-                ancienProduit.qte -= t.quantite;
-                if (ancienProduit.qte < 0) ancienProduit.qte = 0;
+                const newQte = Math.max(0, ancienProduit.qte - t.quantite);
+                await client.from("stock").update({ qte: newQte }).eq("id", ancienProduit.id);
             }
 
-            // Appliquer nouvelle quantité
-            produit.qte += ajout;
+            await client.from("stock").update({
+                qte: produit.qte + ajout
+            }).eq("id", produit.id);
 
-            // Mettre à jour transaction
-            t.produit = produit.nom;
-            t.categorie = produit.categorie;
-            t.quantite = ajout;
-            t.date = new Date().toISOString().split("T")[0];
-
-            transactionEnEdition = null;
-
-        } else {
-            /* MODE AJOUT NORMAL */
-            produit.qte += ajout;
-
-            data.transactions.push({
+            await client.from("transactions").update({
                 produit: produit.nom,
                 categorie: produit.categorie,
                 quantite: ajout,
                 date: new Date().toISOString().split("T")[0]
-            });
+            }).eq("id", t.id);
+
+            transactionEnEdition = null;
+
+        } else {
+            /* ⭐ MODE AJOUT — corrigé */
+            await client.from("stock").update({
+                qte: produit.qte + ajout
+            }).eq("id", produit.id);
+
+            await client.from("transactions").insert([{
+                produit: produit.nom,
+                categorie: produit.categorie,
+                quantite: ajout,
+                date: new Date().toISOString().split("T")[0]
+            }]);
         }
 
-        sauvegarderData();
-        afficherTransactions();
+        await chargerProduits();
+        await chargerTransactions();
         fermerPopup();
         this.reset();
     });
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Recherche */
+    /* 🔍 Recherche */
     /* ---------------------------------------------------------- */
     function normalize(str) {
         if (!str) return "";
-        return str
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
+        return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
     document.getElementById("search").addEventListener("input", function () {
@@ -701,19 +725,16 @@
             if (match) visibleCount++;
         });
 
-        const noResults = document.getElementById("no-results");
-        noResults.style.display = visibleCount === 0 ? "block" : "none";
+        document.getElementById("no-results").style.display =
+            visibleCount === 0 ? "block" : "none";
     });
 
     /* ---------------------------------------------------------- */
-    /* 🔽 Initialisation */
+    /* 🚀 Charger au démarrage */
     /* ---------------------------------------------------------- */
-    afficherTransactions();
+    chargerProduits();
+    chargerTransactions();
 </script>
-
-<button class="floating-add-btn" onclick="ouvrirPopup()">
-    <i class="bi bi-plus-lg"></i>
-</button>
 
 </body>
 </html>

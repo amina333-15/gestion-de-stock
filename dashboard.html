@@ -494,7 +494,9 @@
 
 
 
-<!-- SCRIPT JSON -->
+<!-- SCRIPT DATA BASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
     /* ---------------------------------------------------------- */
     /* 🔐 Sécurité */
@@ -510,99 +512,108 @@
     }
 
     /* ---------------------------------------------------------- */
-    /* 🔧 Chargement des données */
+    /* 🔧 Connexion à Supabase */
     /* ---------------------------------------------------------- */
-    let data = JSON.parse(localStorage.getItem("af_elec_data"));
+    const client = supabase.createClient(
+        "https://dxqffvubixwsxnoaudat.supabase.co",
+        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
+    );
 
-    if (!data) {
-        console.warn("Aucune donnée trouvée dans localStorage.");
-        data = { stock: [], categories: [], transactions: [] };
+    /* ---------------------------------------------------------- */
+    /* 📥 Récupération du stock */
+    /* ---------------------------------------------------------- */
+    async function chargerStock() {
+        const { data, error } = await client
+            .from("stock")
+            .select("*");
+
+        if (error) {
+            console.error("Erreur Supabase (stock) :", error);
+            return [];
+        }
+
+        return data;
     }
 
-    // Sécurité : si transactions n'existe pas encore
-    if (!data.transactions) {
-        data.transactions = [];
+    /* ---------------------------------------------------------- */
+    /* 📥 Récupération des catégories */
+    /* ---------------------------------------------------------- */
+    async function chargerCategories() {
+        const { data, error } = await client
+            .from("categories")
+            .select("*");
+
+        if (error) {
+            console.error("Erreur Supabase (categories) :", error);
+            return [];
+        }
+
+        return data;
     }
 
     /* ---------------------------------------------------------- */
-    /* 📊 CALCULS */
+    /* 📊 Calculs + Affichage */
     /* ---------------------------------------------------------- */
+    (async () => {
 
-    // Nombre total de produits
-    const produitsEnStock = data.stock.length;
+        const stock = await chargerStock();
+        const categories = await chargerCategories();
 
-    // Nombre de catégories uniques
-    const categoriesUniques = new Set(data.stock.map(p => p.categorie));
-    const nombreCategories = categoriesUniques.size;
+        console.log("Stock Supabase :", stock);
+        console.log("Catégories Supabase :", categories);
 
-    // Total des transactions
-    const nombreTransactions = data.transactions.length;
+        /* --- Nombre total de produits --- */
+        document.querySelector(".dashboard-card .card-value").textContent = stock.length;
 
-    // État du stock
-    const stockNormal = data.stock.filter(p => p.qte >= 5).length;
-    const stockFaible = data.stock.filter(p => p.qte > 0 && p.qte <= 2).length;
-    const stockRupture = data.stock.filter(p => p.qte === 0).length;
+        /* --- Nombre total de catégories (table categories) --- */
+        document.getElementById("nombre-categories").textContent = categories.length;
 
-    // Produits critiques (qte ≤ 2)
-    const produitsCritiques = data.stock.filter(p => p.qte <= 2);
+        /* --- Total transactions (à venir) --- */
+        document.getElementById("total-transactions").textContent = "0";
 
-    /* ---------------------------------------------------------- */
-    /* 🖥️ AFFICHAGE */
-    /* ---------------------------------------------------------- */
+        /* --- État du stock --- */
+        const stockNormal = stock.filter(p => p.qte >= 5).length;
+        const stockFaible = stock.filter(p => p.qte > 0 && p.qte <= 2).length;
+        const stockRupture = stock.filter(p => p.qte === 0).length;
 
-    // Statistiques principales
-    document.querySelector(".dashboard-card .card-value").textContent = produitsEnStock;
-    document.getElementById("nombre-categories").textContent = nombreCategories;
-    document.getElementById("total-transactions").textContent = nombreTransactions;
+        document.getElementById("nb-stock-normal").textContent = stockNormal;
+        document.getElementById("nb-stock-faible").textContent = stockFaible;
+        document.getElementById("nb-stock-rupture").textContent = stockRupture;
 
-    // État du stock
-    document.getElementById("nb-stock-normal").textContent = stockNormal;
-    document.getElementById("nb-stock-faible").textContent = stockFaible;
-    document.getElementById("nb-stock-rupture").textContent = stockRupture;
+        /* --- Produits critiques --- */
+        const produitsCritiques = stock.filter(p => p.qte <= 2);
+        const produitsContainer = document.getElementById("produits-critiques");
+        produitsContainer.innerHTML = "";
 
-    // Produits critiques
-    const produitsContainer = document.getElementById("produits-critiques");
-    produitsContainer.innerHTML = "";
-
-    produitsCritiques.forEach(p => {
-        produitsContainer.innerHTML += `
-        <div class="product-item">
-             <!--<img src="default.jpg" alt="//p.nom}">-->
-            <div class="product-info">
-                <h4>${p.nom}</h4>
-                <p>Quantité : ${p.qte}</p>
-            </div>
-        </div>`;
-    });
-
-    /* ---------------------------------------------------------- */
-    /* 🕒 Derniers ajouts au stock (10 dernières transactions) */
-    /* ---------------------------------------------------------- */
-    const derniereAjout = document.getElementById("derniere-ajout");
-    derniereAjout.innerHTML = "";
-
-    if (data.transactions.length === 0) {
-        derniereAjout.innerHTML = "<p>Aucune transaction enregistrée pour le moment.</p>";
-    } else {
-        const last10 = [...data.transactions]
-            .slice(-10)
-            .reverse();
-
-        last10.forEach(t => {
-            derniereAjout.innerHTML += `
-            <div class="product-item">
-                <!--<img src="default.jpg" alt="//t.produit}">-->
-                <div class="product-info">
-                    <h4>${t.produit}</h4>
-                    <p>Catégorie : ${t.categorie}</p>
-                    <p>Ajout : +${t.quantite}</p>
-                    <p>Date : ${t.date}</p>
-                </div>
-            </div>
-        `;
+        produitsCritiques.forEach(p => {
+            produitsContainer.innerHTML += `
+                <div class="product-item">
+                    <div class="product-info">
+                        <h4>${p.nom}</h4>
+                        <p>Quantité : ${p.qte}</p>
+                    </div>
+                </div>`;
         });
-    }
 
+        /* --- Derniers ajouts (tri par date) --- */
+        const derniereAjout = document.getElementById("derniere-ajout");
+        derniereAjout.innerHTML = "";
+
+        const stockTrie = [...stock].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        stockTrie.slice(0, 10).forEach(p => {
+            derniereAjout.innerHTML += `
+                <div class="product-item">
+                    <div class="product-info">
+                        <h4>${p.nom}</h4>
+                        <p>Catégorie : ${p.categorie}</p>
+                        <p>Quantité : ${p.qte}</p>
+                        <p>Date : ${p.date}</p>
+                    </div>
+                </div>`;
+        });
+
+    })();
 </script>
 
 </body>
