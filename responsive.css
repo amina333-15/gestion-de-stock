@@ -4,239 +4,254 @@
 
 @media (max-width: 600px) {
 
-    /* HEADER — Connexion uniquement */
     body.index-page header.header {
-        height: 65px;
-        padding: 10px 15px;
+        height: 60px;
+        padding: 0 16px;
         display: flex;
+        align-items: center;
         justify-content: left;
-        align-items: center;
-    }
-
-    body.index-page .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
     }
 
     body.index-page .logo-container img {
-        height: 38px !important;
-        width: auto;
+        height: 32px !important;
     }
 
     body.index-page .logo-container span {
-        font-size: 22px !important;
+        font-size: 20px !important;
         font-weight: 700;
         color: white;
-        margin: 0;
-        line-height: 1;
     }
 
-    /* TITRE */
     body.index-page h1 {
         font-size: 1.4rem !important;
-        margin-top: 25px;
-        margin-bottom: 15px;
+        margin: 20px 0 15px;
         text-align: center;
     }
 
-    body.index-page h1 i {
-        font-size: 55px !important;
-    }
-
-    /* FORMULAIRE */
     body.index-page form {
         max-width: 90%;
-        margin: 10px 20px 40px;
+        margin: 10px auto 40px;
         padding: 1.6rem;
     }
 
-    body.index-page form input {
-        padding: 0.75rem;
-        font-size: 0.95rem;
-    }
-
-    body.index-page form button {
-        padding: 0.85rem;
-        font-size: 1rem;
-    }
-
     body.index-page footer {
-        height: 40px;
+        display: none !important;
     }
 }
 
 /**********************************************************/
-/* ======================= DASHBOARD ===================== */
+/* ================= HEADER MOBILE ======================= */
 /**********************************************************/
 
 @media (max-width: 600px) {
 
-    /* TITRE */
-    body:not(.index-page) h1 {
-        font-size: 1.4rem !important;
-        margin-top: 20px;
-        margin-bottom: 15px;
-        text-align: center;
-    }
-
-    /* CONTENEUR GLOBAL */
-    .container {
-        width: 92%;
-        margin: 0 auto;
-        padding: 0;
-    }
-
-    /* CARTES */
-    .dashboard-grid {
+    header.header {
+        height: 60px;
+        padding: 0 16px;
         display: flex;
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .dashboard-card {
-        width: 100%;
-        padding: 1.3rem;
-        border-radius: 14px;
-        background-color: white;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-        display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: center;
+        background: var(--marron-fonce);
+        box-sizing: border-box;
     }
 
-    .dashboard-card p {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .card-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.6rem;
-        border-radius: 50%;
-        background-color: var(--beige-fond);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* PRODUITS CRITIQUES */
-    .product-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        padding: 12px;
-        border-radius: 12px;
-        background-color: var(--beige-fond);
-        margin-bottom: 10px;
-    }
-
-    /* TABLEAU */
-    .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 15px;
-    }
-
-    table {
-        min-width: 600px;
-    }
-
-    footer {
-        height: 40px;
-    }
-}
-
-/**********************************************************/
-/* ================= HEADER + MENU MOBILE ================ */
-/**********************************************************/
-
-@media (max-width: 600px) {
-
-    /* HEADER — toutes les pages sauf connexion */
-    body:not(.index-page) header.header {
-        height: 65px;
-        padding: 10px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
-
-    body:not(.index-page) .logo-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    body:not(.index-page) .logo-container img {
-        height: 38px !important;
+    .logo-container img {
+        height: 32px;
         width: auto;
     }
 
-    body:not(.index-page) .logo-container span {
-        font-size: 22px !important;
+    .logo-container span {
+        font-size: 20px;
         font-weight: 700;
         color: white;
-        margin: 0;
-        line-height: 1;
     }
 
-    /* Cacher le menu desktop */
-    body:not(.index-page) nav {
-        display: none;
-    }
-
-    /* Bouton menu mobile */
-    body:not(.index-page) header.header::after {
-        content: "\f479"; /* icône bi-list */
+    /* Bouton menu */
+    header.header::after {
+        content: "\f479"; /* bi-list */
         font-family: "bootstrap-icons";
-        font-size: 32px;
+        font-size: 26px;
         color: white;
         cursor: pointer;
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
     }
+}
 
-    /* MENU LATÉRAL */
-    body:not(.index-page) nav {
+/**********************************************************/
+/* ================= MENU MOBILE ========================= */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    header.header + nav {
         position: fixed;
         top: 0;
         right: -260px;
         width: 260px;
         height: 100vh;
-        background-color: var(--beige-fond);
-        box-shadow: -3px 0 12px rgba(0,0,0,0.15);
+        background: var(--beige-fond);
+        box-shadow: -3px 0 10px rgba(0,0,0,0.25);
         padding-top: 80px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        transition: right 0.35s ease;
+        gap: 12px;
+        transition: right .3s ease;
         z-index: 9999;
     }
 
-    body:not(.index-page) nav.open {
+    header.header + nav.open {
         right: 0;
     }
 
-    body:not(.index-page) nav a {
-        font-size: 1.2rem;
-        padding: 12px 20px;
+    header.header + nav a {
+        display: block;
+        margin: 0 16px;
+        padding: 12px;
         border-radius: 10px;
-        background-color: white;
-        margin: 0 15px;
+        background: white;
         box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         color: var(--texte-principal);
         text-decoration: none;
+        font-size: 1rem;
     }
 
-    body:not(.index-page) nav a i {
-        margin-right: 10px;
+    header.header + nav a i {
+        margin-right: 8px;
+    }
+}
+
+/**********************************************************/
+/* ================= DASHBOARD MOBILE ==================== */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 100%;
+        padding: 0 16px 72px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+        text-align: center;
+        margin: 16px 0;
+    }
+
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        padding: 14px 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--beige-fond);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+    }
+
+    .stock-status-vertical {
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    .stock-status-vertical .label-line {
+        width: 100%;
+    }
+
+    .half-box {
+        width: 100% !important;
+        margin-top: 12px;
+        border-radius: 12px;
+        background: white;
+        padding: 14px 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .product-item {
+        background: var(--beige-fond);
+        border-radius: 10px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+    }
+}
+
+/**********************************************************/
+/* ================= FOOTER MOBILE ======================= */
+/**********************************************************/
+
+@media (max-width: 600px) {
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 56px;
+        background: #6b4f2c;
+        box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 0;
+    }
+
+    .footer-container {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+    }
+
+    .footer-table {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .footer-table tr,
+    .footer-table td {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
+
+    .footer-table td a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .footer-table td a i {
+        font-size: 22px;
+        color: white;
+    }
+
+    /* cacher textes */
+    .footer-table td a span,
+    .footer-table td p {
+        display: none !important;
     }
 }

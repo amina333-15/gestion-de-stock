@@ -649,17 +649,31 @@
         });
 
     })();
-/********************************/
-    document.querySelector("header.header").addEventListener("click", function(e) {
-        if (e.target.closest("header.header::after")) return;
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+        const header = document.querySelector("header.header");
+        const nav = document.querySelector("header.header + nav");
+
+        if (header && nav) {
+
+        // Ouvrir / fermer le menu (zone à droite)
+        header.addEventListener("click", (e) => {
+        if (e.clientX > window.innerWidth - 80) {
+        nav.classList.toggle("open");
+    }
     });
 
-    document.querySelector("header.header").addEventListener("click", function(e) {
-        if (e.offsetX > window.innerWidth - 80) {
-            document.querySelector("nav").classList.toggle("open");
-        }
+        // Fermer si clic ailleurs
+        document.addEventListener("click", (e) => {
+        if (!nav.contains(e.target) && !header.contains(e.target)) {
+        nav.classList.remove("open");
+    }
+    });
+    }
     });
 </script>
+
 
 
 </body>
