@@ -191,13 +191,20 @@
         padding: 14px 16px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         display: flex;
-        justify-content: space-between;
+        margin-right: 10px;
+        margin-left: 10px;
     }
 
     .value {
-        font-size: 1.3rem;
+        font-size: 1.8rem;
         font-weight: bold;
-        color: #6b4f2c;
+        color: #3b2f2f;
+        margin: 0.2rem 0 0;
+        margin-right: 10px;
+
+    /*    font-size: 1.3rem;*/
+    /*    font-weight: bold;*/
+    /*    color: #6b4f2c;*/
     }
 
     /* ------------------------------ */
