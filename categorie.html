@@ -267,6 +267,7 @@
 </head>
 
 <body>
+<!-- HEADER / MENU -->
 <header class="header">
     <div class="logo-container">
         <img src="logo.png" alt="Logo">
@@ -274,30 +275,52 @@
     </div>
 
     <nav>
-        <a href="dashboard.html">
-            <i class="bi bi-speedometer2"></i> Tableau de bord
-        </a>
-
-        <a href="stock.html">
-            <i class="bi bi-box-seam"></i> Stock
-        </a>
-
-        <a href="categorie.html">
-            <i class="bi bi-tags-fill"></i> Catégories
-        </a>
-
-        <a href="restock.html">
-            <i class="bi bi-arrow-repeat"></i> Restock
-        </a>
-        <!-- Déconnexion -->
-        <a href="#" onclick="logout()">
-            <i class="bi bi-power"></i>
-        </a>
-
+        <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
+        <a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a>
+        <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+        <a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
     </nav>
 
-</header>
 
+
+    <!-- HEADER / MENU MOBILE -->
+    <div class="header-mobile">
+
+        <!-- Icône menu -->
+        <div class="icon-menu-custom" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- MENU DÉPLIANT MOBILE -->
+        <div class="side-menu" id="mobileMenu">
+
+            <div class="menu-header">
+                <span>Menu</span>
+                <i class="bi bi-x-lg" onclick="toggleMobileMenu()"></i>
+            </div>
+
+            <div class="menu-links">
+                <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
+                <a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a>
+                <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+                <a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a>
+                <a href="#" onclick="logout()"><i class="bi bi-power"></i> Déconnexion</a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!--    <div class="icon-menu-custom">-->
+    <!--        <span></span>-->
+    <!--        <span></span>-->
+    <!--        <span></span>-->
+    <!--    </div>-->
+</header>
 
 <section class="container">
     <h1>Catégories</h1>
@@ -329,6 +352,17 @@
         </table>
     </div>
 </footer>
+
+<!-- FOOTER MOBILE -->
+<div class="footer-app">
+    <nav class="footer-nav">
+        <a href="dashboard.html"><i class="bi bi-speedometer2"></i></a>
+        <a href="stock.html"><i class="bi bi-box-seam"></i></a>
+        <a href="categorie.html"><i class="bi bi-tags-fill"></i></a>
+        <a href="restock.html"><i class="bi bi-arrow-repeat"></i></a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
+    </nav>
+</div>
 
 <!-- POPUP CATÉGORIE -->
 <div id="popup-categorie" class="popup-overlay">
@@ -562,6 +596,12 @@
     /* 🚀 Charger au démarrage */
     /* ---------------------------------------------------------- */
     afficherCategories();
+</script>
+
+<script>
+    function toggleMobileMenu() {
+        document.getElementById("mobileMenu").classList.toggle("open");
+    }
 </script>
 
 </body>

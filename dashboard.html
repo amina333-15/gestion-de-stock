@@ -11,6 +11,7 @@
     <link rel="icon" href="logo.png">
 
     <style>
+
         /* ============================= */
     /* DASHBOARD — CARTES STATISTIQUES */
     /* ============================= */
@@ -321,9 +322,10 @@
 
 </head>
 
+
 <body>
 
-<!-- MENU -->
+<!-- HEADER / MENU -->
 <header class="header">
     <div class="logo-container">
         <img src="logo.png" alt="Logo">
@@ -331,36 +333,67 @@
     </div>
 
     <nav>
-        <a href="dashboard.html">
-            <i class="bi bi-speedometer2"></i> Tableau de bord
-        </a>
-
-        <a href="stock.html">
-            <i class="bi bi-box-seam"></i> Stock
-        </a>
-
-        <a href="categorie.html">
-            <i class="bi bi-tags-fill"></i> Catégories
-        </a>
-
-        <a href="restock.html">
-            <i class="bi bi-arrow-repeat"></i> Restock
-        </a>
-<!-- Déconnexion -->
-        <a href="#" onclick="logout()">
-            <i class="bi bi-power"></i>
-        </a>
-
+        <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
+        <a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a>
+        <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+        <a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
     </nav>
 
+
+
+    <!-- HEADER / MENU MOBILE -->
+    <div class="header-mobile">
+
+        <!-- Icône menu -->
+        <div class="icon-menu-custom" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- MENU DÉPLIANT MOBILE -->
+        <div class="side-menu" id="mobileMenu">
+
+            <div class="menu-header">
+                <span>Menu</span>
+                <i class="bi bi-x-lg" onclick="toggleMobileMenu()"></i>
+            </div>
+
+            <div class="menu-links">
+                <a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
+                <a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a>
+                <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
+                <a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a>
+                <a href="#" onclick="logout()"><i class="bi bi-power"></i> Déconnexion</a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+<!--    <div class="icon-menu-custom">-->
+<!--        <span></span>-->
+<!--        <span></span>-->
+<!--        <span></span>-->
+<!--    </div>-->
 </header>
 
+
+
+<!-- CONTENU -->
 <section class="container">
     <h1>Tableau de bord</h1>
 
+    <div class="icon-custom-menu">
+        <div></div>
+    </div>
+
+
     <div class="dashboard-grid">
 
-        <!-- Ligne 1 -->
+        <!-- Produits en stock -->
         <div class="dashboard-card">
             <div class="card-left">
                 <p class="card-label">Produits en stock</p>
@@ -382,12 +415,11 @@
             </a>
         </div>
 
-        <!-- État du stock (double hauteur) -->
+        <!-- État du stock -->
         <div class="stock-status-vertical">
 
             <div class="stock-step">
                 <div class="circle">1</div>
-
                 <div class="label-block">
                     <div class="label-line">
                         <span class="label">Stock normal</span>
@@ -401,7 +433,6 @@
 
             <div class="stock-step">
                 <div class="circle">2</div>
-
                 <div class="label-block">
                     <div class="label-line">
                         <span class="label">Stock faible</span>
@@ -415,7 +446,6 @@
 
             <div class="stock-step">
                 <div class="circle">3</div>
-
                 <div class="label-block">
                     <div class="label-line">
                         <span class="label">Rupture</span>
@@ -427,77 +457,68 @@
 
         </div>
 
-        <!-- Ligne 2 -->
-        <!-- Total des transactions -->
+        <!-- Total transactions -->
         <div class="dashboard-card">
-        <div class="card-left">
-            <p class="card-label">Total des transactions</p>
-            <p class="card-value" id="total-transactions">...</p>
-        </div> <a href="restock.html" class="card-icon">
-            <i class="bi bi-arrow-repeat"></i>
-    </a>
-    </div>
+            <div class="card-left">
+                <p class="card-label">Total des transactions</p>
+                <p class="card-value" id="total-transactions">...</p>
+            </div>
+            <a href="restock.html" class="card-icon">
+                <i class="bi bi-arrow-repeat"></i>
+            </a>
+        </div>
 
-
-
-
-        <!-- Ligne 3 -->
-
-        <!-- Dernière Ajout (70%) -->
+        <!-- Dernière ajout -->
         <div class="half-box" style="grid-column: 1 / span 2;">
             <h3>Dernière ajout au stock</h3>
             <p id="derniere-ajout" class="product-list">...</p>
         </div>
 
-        <!-- Produits critiques (30%) -->
+        <!-- Produits critiques -->
         <div class="half-box" style="grid-column: 3 / span 1;">
             <h3>Produits critiques</h3>
             <div id="produits-critiques" class="product-list"></div>
         </div>
 
-
     </div>
-
 </section>
 
+<!-- FOOTER -->
 <footer>
     <div class="align-nav">
         <h1>Navigation</h1>
     </div>
 
     <div class="footer-container">
-
-
         <table class="footer-table">
             <tr>
                 <td><a href="dashboard.html"><i class="bi bi-speedometer2"></i> Tableau de bord</a></td>
                 <td><a href="restock.html"><i class="bi bi-arrow-repeat"></i> Restock</a></td>
-
             </tr>
-
             <tr>
                 <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
                 <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
-
-
             </tr>
-
-
             <tr>
-                <td>
-                    <a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a>
-                </td>
-                <td>
-                    <p>hkqsfbjqfb</p>
-                </td>
+                <td><a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a></td>
+                <td><p>hkqsfbjqfb</p></td>
             </tr>
         </table>
     </div>
 </footer>
 
+<!-- FOOTER MOBILE -->
+<div class="footer-app">
+    <nav class="footer-nav">
+    <a href="dashboard.html"><i class="bi bi-speedometer2"></i></a>
+        <a href="stock.html"><i class="bi bi-box-seam"></i></a>
+        <a href="categorie.html"><i class="bi bi-tags-fill"></i></a>
+        <a href="restock.html"><i class="bi bi-arrow-repeat"></i></a>
+        <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
+    </nav>
+</div>
 
-
-<!-- SCRIPT DATA BASE -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -522,57 +543,30 @@
         "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
     );
 
-    /* ---------------------------------------------------------- */
-    /* 📥 Récupération du stock */
-    /* ---------------------------------------------------------- */
     async function chargerStock() {
-        const { data, error } = await client
-            .from("stock")
-            .select("*");
-
-        if (error) {
-            console.error("Erreur Supabase (stock) :", error);
-            return [];
-        }
-
+        const { data, error } = await client.from("stock").select("*");
+        if (error) return [];
         return data;
     }
 
-    /* ---------------------------------------------------------- */
-    /* 📥 Récupération des catégories */
-    /* ---------------------------------------------------------- */
     async function chargerCategories() {
-        const { data, error } = await client
-            .from("categories")
-            .select("*");
-
-        if (error) {
-            console.error("Erreur Supabase (categories) :", error);
-            return [];
-        }
-
+        const { data, error } = await client.from("categories").select("*");
+        if (error) return [];
         return data;
     }
 
-    /* ---------------------------------------------------------- */
-    /* 📥 Récupération des transactions */
-    /* ---------------------------------------------------------- */
     async function chargerTransactions() {
         const { data, error } = await client
             .from("transactions")
             .select("*")
             .order("date", { ascending: false });
 
-        if (error) {
-            console.error("Erreur Supabase (transactions) :", error);
-            return [];
-        }
-
+        if (error) return [];
         return data;
     }
 
     /* ---------------------------------------------------------- */
-    /* 📊 Calculs + Affichage */
+    /* 📊 Chargement des données */
     /* ---------------------------------------------------------- */
     (async () => {
 
@@ -580,28 +574,10 @@
         const categories = await chargerCategories();
         const transactions = await chargerTransactions();
 
-        console.log("Stock Supabase :", stock);
-        console.log("Catégories Supabase :", categories);
-        console.log("Transactions Supabase :", transactions);
-
-        /* ------------------------------------------------------ */
-        /* 1️⃣ Nombre total de produits                           */
-        /* ------------------------------------------------------ */
         document.querySelector(".dashboard-card .card-value").textContent = stock.length;
-
-        /* ------------------------------------------------------ */
-        /* 2️⃣ Nombre total de catégories                         */
-        /* ------------------------------------------------------ */
         document.getElementById("nombre-categories").textContent = categories.length;
-
-        /* ------------------------------------------------------ */
-        /* 3️⃣ Total des transactions                             */
-        /* ------------------------------------------------------ */
         document.getElementById("total-transactions").textContent = transactions.length;
 
-        /* ------------------------------------------------------ */
-        /* 4️⃣ État du stock                                      */
-        /* ------------------------------------------------------ */
         const stockNormal = stock.filter(p => p.qte > 5).length;
         const stockFaible = stock.filter(p => p.qte > 0 && p.qte <= 5).length;
         const stockRupture = stock.filter(p => p.qte === 0).length;
@@ -610,9 +586,7 @@
         document.getElementById("nb-stock-faible").textContent = stockFaible;
         document.getElementById("nb-stock-rupture").textContent = stockRupture;
 
-        /* ------------------------------------------------------ */
-        /* 5️⃣ Produits critiques (≤ 2)                           */
-        /* ------------------------------------------------------ */
+        /* Produits critiques */
         const produitsCritiques = stock.filter(p => p.qte <= 2);
         const produitsContainer = document.getElementById("produits-critiques");
         produitsContainer.innerHTML = "";
@@ -627,15 +601,11 @@
                 </div>`;
         });
 
-        /* ------------------------------------------------------ */
-        /* 6️⃣ Derniers ajouts (10 dernières transactions)        */
-        /* ------------------------------------------------------ */
+        /* Dernières transactions */
         const derniereAjout = document.getElementById("derniere-ajout");
         derniereAjout.innerHTML = "";
 
-        const derniers = transactions.slice(0, 10);
-
-        derniers.forEach(t => {
+        transactions.slice(0, 10).forEach(t => {
             const produit = stock.find(p => p.id === t.produit_id);
 
             derniereAjout.innerHTML += `
@@ -650,30 +620,33 @@
 
     })();
 
-        document.addEventListener("DOMContentLoaded", () => {
-
+    /* ---------------------------------------------------------- */
+    /* 📱 Menu mobile */
+    /* ---------------------------------------------------------- */
+    document.addEventListener("DOMContentLoaded", () => {
         const header = document.querySelector("header.header");
         const nav = document.querySelector("header.header + nav");
 
         if (header && nav) {
+            header.addEventListener("click", (e) => {
+                if (e.clientX > window.innerWidth - 80) {
+                    nav.classList.toggle("open");
+                }
+            });
 
-        // Ouvrir / fermer le menu (zone à droite)
-        header.addEventListener("click", (e) => {
-        if (e.clientX > window.innerWidth - 80) {
-        nav.classList.toggle("open");
-    }
-    });
-
-        // Fermer si clic ailleurs
-        document.addEventListener("click", (e) => {
-        if (!nav.contains(e.target) && !header.contains(e.target)) {
-        nav.classList.remove("open");
-    }
-    });
-    }
+            document.addEventListener("click", (e) => {
+                if (!nav.contains(e.target) && !header.contains(e.target)) {
+                    nav.classList.remove("open");
+                }
+            });
+        }
     });
 </script>
-
+<script>
+    function toggleMobileMenu() {
+        document.getElementById("mobileMenu").classList.toggle("open");
+    }
+</script>
 
 
 </body>
