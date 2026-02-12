@@ -1,3 +1,4 @@
+/* style dans responssive.css */
 .header-mobile {
     display: none;
 }
@@ -186,11 +187,17 @@
     /* STOCK STATUS */
     /* ------------------------------ */
     .stock-status-vertical {
-        background: white;
-        border-radius: 12px;
-        padding: 14px 16px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         display: flex;
+        flex-direction: column;
+        background-color: #ffffff;
+        border: 1px solid #e0d6c8;
+        border-radius: 10px;
+        padding: 1rem;
+
+        width: 100%;        /* s’adapte à la fenêtre */
+        max-width: 400px;   /* limite sur grand écran */
+
+        grid-row: span 2;
         margin-right: 10px;
         margin-left: 10px;
     }
@@ -309,4 +316,61 @@
 }
 
 
+    @media (max-width: 600px) {
 
+        .stock-status-vertical {
+            width: 100% !important;     /* le conteneur devient fluide */
+            max-width: 100% !important; /* il ne dépasse plus l’écran */
+            margin: 0 auto;             /* centré proprement */
+        }
+    }
+
+
+
+@media (max-width: 600px) {
+
+    .stock-status-vertical {
+        width: 100% !important;
+        max-width: 500px !important; /* même largeur que les autres cartes */
+        margin: 0 auto !important;   /* centré */
+    }
+}
+@media (max-width: 600px) {
+
+    .dashboard-grid {
+        width: 100%;
+        max-width: 500px;   /* même largeur que les autres cartes */
+        margin: 0 auto;     /* centré */
+        padding: 0 10px;    /* optionnel : harmonise les bords */
+        box-sizing: border-box;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    /* limiter le parent pour harmoniser toutes les cartes */
+    .dashboard-grid {
+        width: 100%;
+        max-width: 500px;        /* même max-width que tes autres cartes */
+        margin: 0 auto;          /* centre le bloc */
+        padding: 0 10px;         /* optionnel, harmonise les bords */
+        box-sizing: border-box;
+    }
+
+    /* s'assurer que le conteneur stock ne dépasse pas visuellement */
+    .stock-status-vertical {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;   /* supprime marges latérales qui gonflent */
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+        flex: 0 0 auto !important;   /* empêche l'étirement dans un flex parent */
+        align-self: center !important;
+    }
+
+    /* si .stock-status-vertical a des padding + border, réduire visuellement */
+    .stock-status-vertical > * {
+        box-sizing: border-box;
+    }
+}
