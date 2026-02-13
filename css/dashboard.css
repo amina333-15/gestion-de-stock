@@ -1,0 +1,298 @@
+    /* ============================= */
+    /* DASHBOARD — CARTES STATISTIQUES */
+    /* ============================= */
+
+.stats-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.stat-box {
+    flex: 1 1 calc(33% - 2rem);
+    background-color: #ffffff; /* BLANC */
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.stat-box h3 {
+    color: var(--texte-titre);
+    margin-bottom: 0.5rem;
+}
+
+.stat-box .nb {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--marron-fonce);
+}
+
+/* ============================= */
+/* ÉTAT DU STOCK */
+/* ============================= */
+
+.stock-status {
+    margin-top: 3rem;
+}
+
+.status-list {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.status-item {
+    flex: 1 1 calc(33% - 2rem);
+    background-color: #ffffff; /* BLANC */
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.status-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.status-item h4 {
+    color: var(--texte-titre);
+    margin-bottom: 0.5rem;
+}
+
+.status-item .nb {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--marron-fonce);
+}
+
+/* ============================= */
+/* PRODUITS CRITIQUES & TRANSACTIONS */
+/* ============================= */
+
+.product-list {
+    max-height: 130px; /* ajuste selon la hauteur de ton bloc */
+    overflow-y: auto;
+    padding-right: 0.5rem; /* pour éviter que le scroll cache le contenu */
+}
+
+.product-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background-color: #c8b8a6;
+    border-radius: 4px;
+}
+
+
+.product-list,
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.product-item,
+.transaction-item {
+    background-color: #fcf8f2; /* BLANC */
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-item:hover,
+.transaction-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+
+.product-info h4,
+.transaction-info h4 {
+    margin: 0;
+    color: var(--texte-titre);
+}
+
+.product-info p,
+.transaction-info p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+.dashboard-layout {
+    display: grid;
+    grid-template-areas:
+        "stock categories"
+        "transactions transactions"
+        "normal faible"
+        "rupture rupture"
+        "last critical";
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 colonnes égales */
+    grid-template-rows: auto auto auto; /* 3 lignes */
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Blocs normaux */
+.stat-box, .status-box, .half-box {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Bloc État du stock = double hauteur */
+.status-box {
+    grid-row: span 2; /* occupe 2 lignes */
+}
+
+/* Dernière transaction + Produits critiques */
+.half-box {
+    height: 200px; /* ou auto si tu veux */
+}
+
+
+
+
+
+
+.dashboard-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0d6c8;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card-left {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.card-label {
+    font-size: 1rem;
+    color: #6b4f2c;
+    margin: 0;
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #3b2f2f;
+    margin: 0.2rem 0 0;
+}
+
+.card-icon {
+    background-color: #f5efe6;
+    width: 40px;               /* largeur fixe */
+    height: 40px;              /* hauteur identique → rond parfait */
+    border-radius: 50%;        /* cercle */
+    color: #6b4f2c;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon:hover {
+    background-color: #e8dfd2;
+}
+
+/*   stock-status-vertical   */
+
+.stock-status-vertical {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border: 1px solid #e0d6c8;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 400px;
+    grid-row: span 2;
+}
+
+.stock-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.circle {
+    width: 40px;
+    height: 40px;
+    background-color: #f5efe6;
+    color: #6b4f2c;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.label-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-line {
+    display: flex;
+    justify-content: space-between;
+    width: 320px; /* ajuste selon ton design */
+}
+
+.label {
+    font-size: 0.95rem;
+    color: #3b2f2f;
+}
+
+.value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #6b4f2c;
+}
+
+.condition {
+    font-size: 0.85rem;
+    color: #6b4f2c;
+}
+
+.connector-vertical {
+    width: 2px;
+    height: 25px;
+    background-color: #c8b8a6;
+    margin: 0.5rem 0 0.5rem 19px; /* aligné au centre du cercle */
+}
+
+

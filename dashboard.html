@@ -5,331 +5,29 @@
     <title>Tableau de bord - AF.ELEC</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <!-- STYLE CSS DE BASE -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- LIEN ICONS BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- ICON LOGO ENTREPRISE -->
-    <link rel="icon" href="logo.png">
+    <link rel="icon" href="img/logo.png">
 
-<!-- style dans dashboard -->
-    <style>
-        /* ============================= */
-        /* DASHBOARD — CARTES STATISTIQUES */
-        /* ============================= */
+    <!-- DASHBOARD CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
 
-    .stats-grid {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        margin-top: 2rem;
-    }
-
-    .stat-box {
-        flex: 1 1 calc(33% - 2rem);
-        background-color: #ffffff; /* BLANC */
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .stat-box:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .stat-box h3 {
-        color: var(--texte-titre);
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-box .nb {
-        font-size: 2rem;
-        font-weight: bold;
-        color: var(--marron-fonce);
-    }
-
-    /* ============================= */
-    /* ÉTAT DU STOCK */
-    /* ============================= */
-
-    .stock-status {
-        margin-top: 3rem;
-    }
-
-    .status-list {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
-
-    .status-item {
-        flex: 1 1 calc(33% - 2rem);
-        background-color: #ffffff; /* BLANC */
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .status-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .status-item h4 {
-        color: var(--texte-titre);
-        margin-bottom: 0.5rem;
-    }
-
-    .status-item .nb {
-        font-size: 1.6rem;
-        font-weight: bold;
-        color: var(--marron-fonce);
-    }
-
-    /* ============================= */
-    /* PRODUITS CRITIQUES & TRANSACTIONS */
-    /* ============================= */
-
-    .product-list {
-        max-height: 130px; /* ajuste selon la hauteur de ton bloc */
-        overflow-y: auto;
-        padding-right: 0.5rem; /* pour éviter que le scroll cache le contenu */
-    }
-
-    .product-list::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .product-list::-webkit-scrollbar-thumb {
-        background-color: #c8b8a6;
-        border-radius: 4px;
-    }
-
-
-    .product-list,
-    .transaction-list {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-top: 2rem;
-    }
-
-    .product-item,
-    .transaction-item {
-        background-color: #fcf8f2; /* BLANC */
-        padding: 1rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .product-item:hover,
-    .transaction-item:hover {
-        transform: translateX(4px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    /*.product-item img {*/
-    /*    width: 50px;*/
-    /*    height: 50px;*/
-    /*    object-fit: cover;*/
-    /*    border-radius: 6px;*/
-    /*}*/
-
-    .product-info h4,
-    .transaction-info h4 {
-        margin: 0;
-        color: var(--texte-titre);
-    }
-
-    .product-info p,
-    .transaction-info p {
-        margin: 0.2rem 0;
-        font-size: 0.9rem;
-        color: #555;
-    }
-    .dashboard-layout {
-        display: grid;
-        grid-template-areas:
-        "stock categories"
-        "transactions transactions"
-        "normal faible"
-        "rupture rupture"
-        "last critical";
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr; /* 3 colonnes égales */
-        grid-template-rows: auto auto auto; /* 3 lignes */
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    /* Blocs normaux */
-    .stat-box, .status-box, .half-box {
-        background: #ffffff;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    /* Bloc État du stock = double hauteur */
-    .status-box {
-        grid-row: span 2; /* occupe 2 lignes */
-    }
-
-    /* Dernière transaction + Produits critiques */
-    .half-box {
-        height: 200px; /* ou auto si tu veux */
-    }
-
-
-
-
-
-
-    .dashboard-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #ffffff;
-        border: 1px solid #e0d6c8;
-        border-radius: 10px;
-        padding: 1rem 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    }
-
-    .card-left {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-    }
-
-    .card-label {
-        font-size: 1rem;
-        color: #6b4f2c;
-        margin: 0;
-    }
-
-    .card-value {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #3b2f2f;
-        margin: 0.2rem 0 0;
-    }
-
-    .card-icon {
-        background-color: #f5efe6;
-        width: 40px;               /* largeur fixe */
-        height: 40px;              /* hauteur identique → rond parfait */
-        border-radius: 50%;        /* cercle */
-        color: #6b4f2c;
-        font-size: 1.4rem;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .card-icon:hover {
-        background-color: #e8dfd2;
-    }
-
-    /*   stock-status-vertical   */
-
-    .stock-status-vertical {
-        display: flex;
-        flex-direction: column;
-        background-color: #ffffff;
-        border: 1px solid #e0d6c8;
-        border-radius: 10px;
-        padding: 1rem;
-        width: 400px;
-        grid-row: span 2;
-    }
-
-    .stock-step {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .circle {
-        width: 40px;
-        height: 40px;
-        background-color: #f5efe6;
-        color: #6b4f2c;
-        font-weight: bold;
-        font-size: 1.2rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .label-block {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .label-line {
-        display: flex;
-        justify-content: space-between;
-        width: 320px; /* ajuste selon ton design */
-    }
-
-    .label {
-        font-size: 0.95rem;
-        color: #3b2f2f;
-    }
-
-    .value {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #6b4f2c;
-    }
-
-    .condition {
-        font-size: 0.85rem;
-        color: #6b4f2c;
-    }
-
-    .connector-vertical {
-        width: 2px;
-        height: 25px;
-        background-color: #c8b8a6;
-        margin: 0.5rem 0 0.5rem 19px; /* aligné au centre du cercle */
-    }
-
-
-    </style>
-
-    <link rel="stylesheet" href="responsive.css">
+    <!-- MOBILE CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
 
 </head>
-
 
 <body>
 
 <!-- HEADER / MENU -->
 <header class="header">
     <div class="logo-container">
-        <img src="logo.png" alt="Logo">
+        <img src="img/logo.png" alt="Logo">
         <span>ELEC</span>
     </div>
 
@@ -341,9 +39,7 @@
         <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
     </nav>
 
-
-
-    <!-- HEADER / MENU MOBILE -->
+    <!-- MENU MOBILE -->
     <div class="header-mobile">
 
         <!-- Icône menu -->
@@ -373,24 +69,11 @@
 
     </div>
 
-
-<!--    <div class="icon-menu-custom">-->
-<!--        <span></span>-->
-<!--        <span></span>-->
-<!--        <span></span>-->
-<!--    </div>-->
 </header>
-
-
 
 <!-- CONTENU -->
 <section class="container">
     <h1>Tableau de bord</h1>
-
-    <div class="icon-custom-menu">
-        <div></div>
-    </div>
-
 
     <div class="dashboard-grid">
 
@@ -498,7 +181,7 @@
             </tr>
             <tr>
                 <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
-                <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
+                <td><a href="#" onclick="logout()"><i class="bi bi-power"></i> Déconnexion</a></td>
             </tr>
             <tr>
                 <td><a href="categorie.html"><i class="bi bi-tags-fill"></i> Catégories</a></td>
@@ -519,136 +202,18 @@
     </nav>
 </div>
 
-<!-- SUPABASE -->
+<!-- LIEN BDD SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-    /* ---------------------------------------------------------- */
-    /* 🔐 Sécurité */
-    /* ---------------------------------------------------------- */
-    if (localStorage.getItem("isLogged") !== "true") {
-        window.location.href = "index.html";
-    }
+<!-- SCRIPT DE BASE -->
+<script src="js/app.js"></script>
 
-    function logout() {
-        alert("Vous êtes déconnecté");
-        localStorage.removeItem("isLogged");
-        window.location.href = "index.html";
-    }
+<!-- JS spécifique Dashboard -->
+<script src="js/dashboard.js"></script>
 
-    /* ---------------------------------------------------------- */
-    /* 🔧 Connexion Supabase */
-    /* ---------------------------------------------------------- */
-    const client = supabase.createClient(
-        "https://dxqffvubixwsxnoaudat.supabase.co",
-        "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
-    );
 
-    async function chargerStock() {
-        const { data, error } = await client.from("stock").select("*");
-        if (error) return [];
-        return data;
-    }
-
-    async function chargerCategories() {
-        const { data, error } = await client.from("categories").select("*");
-        if (error) return [];
-        return data;
-    }
-
-    async function chargerTransactions() {
-        const { data, error } = await client
-            .from("transactions")
-            .select("*")
-            .order("date", { ascending: false });
-
-        if (error) return [];
-        return data;
-    }
-
-    /* ---------------------------------------------------------- */
-    /* 📊 Chargement des données */
-    /* ---------------------------------------------------------- */
-    (async () => {
-
-        const stock = await chargerStock();
-        const categories = await chargerCategories();
-        const transactions = await chargerTransactions();
-
-        document.querySelector(".dashboard-card .card-value").textContent = stock.length;
-        document.getElementById("nombre-categories").textContent = categories.length;
-        document.getElementById("total-transactions").textContent = transactions.length;
-
-        const stockNormal = stock.filter(p => p.qte > 5).length;
-        const stockFaible = stock.filter(p => p.qte > 0 && p.qte <= 5).length;
-        const stockRupture = stock.filter(p => p.qte === 0).length;
-
-        document.getElementById("nb-stock-normal").textContent = stockNormal;
-        document.getElementById("nb-stock-faible").textContent = stockFaible;
-        document.getElementById("nb-stock-rupture").textContent = stockRupture;
-
-        /* Produits critiques */
-        const produitsCritiques = stock.filter(p => p.qte <= 2);
-        const produitsContainer = document.getElementById("produits-critiques");
-        produitsContainer.innerHTML = "";
-
-        produitsCritiques.forEach(p => {
-            produitsContainer.innerHTML += `
-                <div class="product-item">
-                    <div class="product-info">
-                        <h4>${p.nom}</h4>
-                        <p>Quantité : ${p.qte}</p>
-                    </div>
-                </div>`;
-        });
-
-        /* Dernières transactions */
-        const derniereAjout = document.getElementById("derniere-ajout");
-        derniereAjout.innerHTML = "";
-
-        transactions.slice(0, 10).forEach(t => {
-            const produit = stock.find(p => p.id === t.produit_id);
-
-            derniereAjout.innerHTML += `
-                <div class="product-item">
-                    <div class="product-info">
-                        <h4>${produit ? produit.nom : "Produit supprimé"}</h4>
-                        <p>Quantité ajoutée : +${t.quantite}</p>
-                        <p>Date : ${t.date}</p>
-                    </div>
-                </div>`;
-        });
-
-    })();
-
-    /* ---------------------------------------------------------- */
-    /* 📱 Menu mobile */
-    /* ---------------------------------------------------------- */
-    document.addEventListener("DOMContentLoaded", () => {
-        const header = document.querySelector("header.header");
-        const nav = document.querySelector("header.header + nav");
-
-        if (header && nav) {
-            header.addEventListener("click", (e) => {
-                if (e.clientX > window.innerWidth - 80) {
-                    nav.classList.toggle("open");
-                }
-            });
-
-            document.addEventListener("click", (e) => {
-                if (!nav.contains(e.target) && !header.contains(e.target)) {
-                    nav.classList.remove("open");
-                }
-            });
-        }
-    });
-</script>
-<script>
-    function toggleMobileMenu() {
-        document.getElementById("mobileMenu").classList.toggle("open");
-    }
-</script>
-
+<!-- JS App Mobile -->
+<script src="js/responsive.js"></script>
 
 </body>
 </html>

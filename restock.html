@@ -5,330 +5,20 @@
     <title>Restock - AF.ELEC</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+    <!-- STYLE CSS DE BASE -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- LIEN ICONS BOOTSTRAP -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- ICON LOGO ENTREPRISE -->
-    <link rel="icon" href="logo.png">
+    <link rel="icon" href="img/logo.png">
 
-    <style>
+    <!-- RESTOCK CSS -->
+    <link rel="stylesheet" href="css/restock.css">
 
-        .transaction-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .transaction-actions button {
-            flex: 1;               /* même largeur */
-            padding: 10px 0;       /* même hauteur */
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            text-align: center;
-            font-size: 14px;
-            margin-top: 50px;
-            height: 50px;
-            color: white;
-            background-color: #9C5E3F;
-        }
-
-
-        .transaction-actions i {
-            font-size: 25px;   /* taille de l’icône */
-            vertical-align: middle;
-        }
-
-
-
-        /* Bouton Modifier */
-        .btn-modifier {
-            margin-left: 50px;
-        }
-
-        /* Bouton Supprimer */
-        .btn-supprimer {
-            margin-right: 50px;
-        }
-
-
-
-
-
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #9C5E3F;
-            cursor: pointer;
-            z-index: 9999;
-        }
-
-
-
-
-        .close-btn:hover {
-            color: #7a4a32;
-            transform: scale(1.1);
-        }
-
-
-
-        #transaction-detail p {
-            text-align: left;
-            margin-left: 50px;
-        }
-
-
-        #transaction-title {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-
-        #transaction-title i {
-            font-size: 45px;
-            color: #9C5E3F; /* couleur premium */
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-
-
-
-
-        #no-results i {
-            font-size: 50px;
-            margin-right: 8px;
-            color: #9C5E3F; /* optionnel : couleur premium */
-        }
-
-
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 30px;
-
-        }
-
-        .search-bar input {
-            padding: 0.7rem;
-            width: 100%;
-            border: 1px solid #c8b8a6;
-            border-radius: 6px;
-        }
-        .search-btn:hover {
-            background-color: #6b4f2c;
-            transform: scale(1.05);
-        }
-
-
-
-        .search-btn {
-            background-color: #9C5E3F;
-            border: none;
-            padding: 0.6rem 0.8rem;
-            border-radius: 6px;
-            cursor: pointer;
-            color: white;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .restock-layout {
-            display: flex;
-            height: calc(100vh - 100px);
-            padding: 20px;
-            gap: 20px;
-        }
-
-        .transactions-list {
-            width: 35%;
-            background: #fcf8f2;
-            border-radius: 10px;
-            padding: 20px;
-            overflow-y: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-
-        .transaction-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-        }
-
-        .transaction-item:hover {
-            background-color: #f0e8dc;
-        }
-
-        .transaction-detail {
-            flex: 1;
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        .floating-add-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #9C5E3F;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-
-
-
-        /* POPUP */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 5000;
-        }
-
-        .popup-box {
-            background: #fcf8f2;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 350px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .popup-box h2 {
-            margin-top: 0;
-            color: #6b4f2c;
-        }
-
-        .popup-box input {
-            width: 100%;
-            padding: 0.7rem;
-            margin-bottom: 1rem;
-            border: 1px solid #c8b8a6;
-            border-radius: 6px;
-        }
-
-        .popup-submit {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: #9C5E3F;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .popup-submit:hover {
-            background-color: #6b4f2c;
-        }
-
-
-
-        .popup-box input,
-        .popup-box textarea,
-        .popup-box select {
-            width: 100%;                 /* exactement comme le bouton */
-            padding: 0.8rem;             /* même padding que le bouton */
-            margin-bottom: 1rem;
-            border: 1px solid #c8b8a6;
-            border-radius: 6px;
-            background-color: white;
-            font-size: 1rem;
-            color: #6b4f2c;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-sizing: border-box;      /* garantit que la largeur inclut le padding */
-        }
-
-
-
-
-        /* Style du select pour qu'il ressemble aux inputs */
-        /* Style du select pour qu'il ressemble aux inputs */
-        .popup-box select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg fill='%236b4f2c' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 18px;
-        }
-
-
-        /* Effet hover */
-        .popup-box select:hover {
-            border-color: #9C5E3F;
-        }
-
-        /* Effet focus */
-        .popup-box select:focus {
-            outline: none;
-            border-color: #9C5E3F;
-            box-shadow: 0 0 4px rgba(156, 94, 63, 0.4);
-        }
-
-        .popup-submit {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: #9C5E3F;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.3rem; /* pour que l’icône soit bien visible */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .popup-submit:hover {
-            background-color: #6b4f2c;
-            transform: scale(1.05);
-        }
-
-        .popup-submit i {
-            font-size: 1.6rem; /* taille de l’icône */
-        }
-
-
-    </style>
-
-    <link rel="stylesheet" href="responsive.css">
+    <!-- MOBILE CSS -->
+    <link rel="stylesheet" href="css/responsive.css">
 
 </head>
 <body>
@@ -336,7 +26,7 @@
 <!-- HEADER / MENU -->
 <header class="header">
     <div class="logo-container">
-        <img src="logo.png" alt="Logo">
+        <img src="img/logo.png" alt="Logo">
         <span>ELEC</span>
     </div>
 
@@ -348,9 +38,7 @@
         <a href="#" onclick="logout()"><i class="bi bi-power"></i></a>
     </nav>
 
-
-
-    <!-- HEADER / MENU MOBILE -->
+    <!-- MENU MOBILE -->
     <div class="header-mobile">
 
         <!-- Icône menu -->
@@ -380,16 +68,13 @@
 
     </div>
 
-
-    <!--    <div class="icon-menu-custom">-->
-    <!--        <span></span>-->
-    <!--        <span></span>-->
-    <!--        <span></span>-->
-    <!--    </div>-->
 </header>
 <h1> </h1>
 
+<!-- CONTENU PAGE RESTOCK -->
 <section class="restock-layout">
+
+    <!-- LISTE DES RESTOCKS -->
     <div class="transactions-list">
         <div class="search-bar">
         <input type="text" id="search" placeholder="Rechercher une transaction...">
@@ -403,8 +88,7 @@
 
     </div>
 
-
-
+    <!-- DETAILS DES RESTOCKS -->
     <div class="transaction-detail" id="transaction-detail">
         <h2 id="transaction-title">
             <i class="bi bi-journal-text"></i><br>
@@ -462,7 +146,7 @@
     </div>
 </div>
 
-
+<!-- FOOTER -->
 <footer>
     <div class="align-nav">
         <h1>Navigation</h1>
@@ -480,8 +164,7 @@
 
             <tr>
                 <td><a href="stock.html"><i class="bi bi-box-seam"></i> Stock</a></td>
-                <td><a href="index.html"><i class="bi bi-power"></i> Déconnexion</a></td>
-
+                <td><a href="#" onclick="logout()"><i class="bi bi-power"></i> Déconnexion</a></td>
 
             </tr>
 
@@ -513,301 +196,17 @@
     <i class="bi bi-plus-lg"></i>
 </button>
 
+<!-- LIEN BDD SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
+<!-- SCRIPT DE BASE -->
+<script src="js/app.js"></script>
 
-        /* ---------------------------------------------------------- */
-        /* 🔐 Sécurité */
-        /* ---------------------------------------------------------- */
-        if (localStorage.getItem("isLogged") !== "true") {
-            window.location.href = "index.html";
-        }
+<!-- JS spécifique Restock -->
+<script src="js/restock.js"></script>
 
-        /* ---------------------------------------------------------- */
-        /* 🔧 Connexion Supabase */
-        /* ---------------------------------------------------------- */
-        const client = supabase.createClient(
-            "https://dxqffvubixwsxnoaudat.supabase.co",
-            "sb_publishable_Jg2Z_fDjwpY9yF5KQLbAOA_j7lsbav9"
-        );
-
-        /* ---------------------------------------------------------- */
-        /* 🔧 Variables globales */
-        /* ---------------------------------------------------------- */
-        let transactionEnEdition = null;
-        let produitsCache = [];
-        let transactionsCache = [];
-
-        /* ---------------------------------------------------------- */
-        /* 📥 Charger les produits */
-        /* ---------------------------------------------------------- */
-        async function chargerProduits() {
-            const { data, error } = await client
-                .from("stock")
-                .select("*")
-                .order("nom", { ascending: true });
-
-            if (error) return console.error(error);
-
-            produitsCache = data;
-
-            // Remplir les deux selects
-            const selects = [
-                document.getElementById("produit-select-add"),
-                document.getElementById("produit-select-edit")
-            ];
-
-            selects.forEach(select => {
-                select.innerHTML = '<option value="">Sélectionnez un produit</option>';
-                data.forEach(p => {
-                    const option = document.createElement("option");
-                    option.value = p.id;
-                    option.textContent = p.nom;
-                    select.appendChild(option);
-                });
-            });
-        }
-
-        /* ---------------------------------------------------------- */
-        /* 📥 Charger les transactions */
-        /* ---------------------------------------------------------- */
-        async function chargerTransactions() {
-            const { data, error } = await client
-                .from("transactions")
-                .select("*")
-                .order("date", { ascending: false });
-
-            if (error) return console.error(error);
-
-            transactionsCache = data;
-            afficherTransactions();
-        }
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Afficher les transactions */
-        /* ---------------------------------------------------------- */
-        function afficherTransactions() {
-            const container = document.getElementById("transaction-items");
-            container.innerHTML = "";
-
-            if (transactionsCache.length === 0) {
-                container.innerHTML = "<p>Aucune transaction pour le moment.</p>";
-                return;
-            }
-
-            transactionsCache.forEach((t, index) => {
-                const produit = produitsCache.find(p => p.id === t.produit_id);
-
-                container.innerHTML += `
-                <div class="transaction-item" onclick="afficherDetail(${index})">
-                    <strong>${produit ? produit.nom : "Produit supprimé"}</strong><br>
-                    <small>${produit ? produit.categorie : "?"} — ${t.date}</small>
-                </div>
-            `;
-            });
-        }
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Afficher le détail */
-        /* ---------------------------------------------------------- */
-        window.afficherDetail = function(index) {
-            const t = transactionsCache[index];
-            const produit = produitsCache.find(p => p.id === t.produit_id);
-
-            const detail = document.getElementById("transaction-detail");
-
-            detail.innerHTML = `
-            <h2>${produit ? produit.nom : "Produit supprimé"}</h2>
-            <p><strong>Catégorie :</strong> ${produit ? produit.categorie : "?"}</p>
-            <p><strong>Quantité ajoutée :</strong> ${t.quantite}</p>
-            <p><strong>Date :</strong> ${t.date}</p>
-
-            <div class="transaction-actions">
-                <button class="btn-modifier" onclick="modifierTransaction(${index})">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
-                <button class="btn-supprimer" onclick="supprimerTransaction(${index})">
-                    <i class="bi bi-trash-fill"></i>
-                </button>
-            </div>
-        `;
-        };
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Ouvrir popup AJOUT */
-        /* ---------------------------------------------------------- */
-        window.ouvrirPopup = async function() {
-            document.getElementById("popup-add").style.display = "flex";
-            await chargerProduits();
-            document.getElementById("produit-infos-add").style.display = "none";
-            document.getElementById("quantite-ajout-add").value = "";
-        };
-
-        window.fermerPopupAdd = function() {
-            document.getElementById("popup-add").style.display = "none";
-        };
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Ouvrir popup MODIFICATION */
-        /* ---------------------------------------------------------- */
-        window.modifierTransaction = async function(index) {
-            transactionEnEdition = index;
-            const t = transactionsCache[index];
-
-            document.getElementById("popup-edit").style.display = "flex";
-
-            await chargerProduits();
-
-            const produit = produitsCache.find(p => p.id === t.produit_id);
-
-            document.getElementById("produit-select-edit").value = produit.id;
-            document.getElementById("info-nom-edit").textContent = produit.nom;
-            document.getElementById("info-cat-edit").textContent = produit.categorie;
-            document.getElementById("info-quantite-edit").textContent = produit.qte;
-            document.getElementById("produit-infos-edit").style.display = "block";
-
-            document.getElementById("quantite-ajout-edit").value = t.quantite;
-        };
-
-        window.fermerPopupEdit = function() {
-            document.getElementById("popup-edit").style.display = "none";
-            transactionEnEdition = null;
-        };
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Listener AJOUT */
-        /* ---------------------------------------------------------- */
-        document.getElementById("produit-select-add").addEventListener("change", function () {
-            const id = parseInt(this.value);
-            const produit = produitsCache.find(p => p.id === id);
-
-            if (produit) {
-                document.getElementById("info-nom-add").textContent = produit.nom;
-                document.getElementById("info-cat-add").textContent = produit.categorie;
-                document.getElementById("info-quantite-add").textContent = produit.qte;
-                document.getElementById("produit-infos-add").style.display = "block";
-            } else {
-                document.getElementById("produit-infos-add").style.display = "none";
-            }
-        });
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Listener MODIFICATION */
-        /* ---------------------------------------------------------- */
-        document.getElementById("produit-select-edit").addEventListener("change", function () {
-            const id = parseInt(this.value);
-            const produit = produitsCache.find(p => p.id === id);
-
-            if (produit) {
-                document.getElementById("info-nom-edit").textContent = produit.nom;
-                document.getElementById("info-cat-edit").textContent = produit.categorie;
-                document.getElementById("info-quantite-edit").textContent = produit.qte;
-                document.getElementById("produit-infos-edit").style.display = "block";
-            } else {
-                document.getElementById("produit-infos-edit").style.display = "none";
-            }
-        });
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Soumission AJOUT */
-        /* ---------------------------------------------------------- */
-        document.getElementById("form-transaction-add").addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            const produit_id = parseInt(document.getElementById("produit-select-add").value);
-            const ajout = parseInt(document.getElementById("quantite-ajout-add").value);
-
-            const produit = produitsCache.find(p => p.id === produit_id);
-
-            await client.from("stock").update({
-                qte: produit.qte + ajout
-            }).eq("id", produit.id);
-
-            await client.from("transactions").insert([{
-                produit_id,
-                quantite: ajout,
-                date: new Date().toISOString().split("T")[0]
-            }]);
-
-            await chargerProduits();
-            await chargerTransactions();
-            fermerPopupAdd();
-            this.reset();
-        });
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Soumission MODIFICATION */
-        /* ---------------------------------------------------------- */
-        document.getElementById("form-transaction-edit").addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            const produit_id = parseInt(document.getElementById("produit-select-edit").value);
-            const ajout = parseInt(document.getElementById("quantite-ajout-edit").value);
-
-            const t = transactionsCache[transactionEnEdition];
-
-            const produitAvant = produitsCache.find(p => p.id === t.produit_id);
-
-            const qteCorrigee = produitAvant.qte - t.quantite;
-            const qteFinale = qteCorrigee + ajout;
-
-            await client.from("stock").update({
-                qte: qteFinale
-            }).eq("id", produitAvant.id);
-
-            await client.from("transactions").update({
-                produit_id,
-                quantite: ajout,
-                date: new Date().toISOString().split("T")[0]
-            }).eq("id", t.id);
-
-            await chargerProduits();
-            await chargerTransactions();
-            fermerPopupEdit();
-            this.reset();
-        });
-
-        /* ---------------------------------------------------------- */
-        /* 🔽 Suppression */
-        /* ---------------------------------------------------------- */
-        window.supprimerTransaction = async function(index) {
-            const t = transactionsCache[index];
-
-            const produit = produitsCache.find(p => p.id === t.produit_id);
-
-            if (produit) {
-                const qteCorrigee = Math.max(0, produit.qte - t.quantite);
-                await client.from("stock").update({ qte: qteCorrigee }).eq("id", produit.id);
-            }
-
-            await client.from("transactions").delete().eq("id", t.id);
-
-            await chargerProduits();
-            await chargerTransactions();
-
-            document.getElementById("transaction-detail").innerHTML = `
-            <h2><i class="bi bi-journal-text"></i><br>Détail de la transaction</h2>
-            <p>Sélectionnez une transaction dans la liste à gauche</p>
-        `;
-        };
-
-        /* ---------------------------------------------------------- */
-        /* 🚀 Charger au démarrage */
-        /* ---------------------------------------------------------- */
-        await chargerProduits();
-        await chargerTransactions();
-
-    });
-</script>
-
-<script>
-    function toggleMobileMenu() {
-        document.getElementById("mobileMenu").classList.toggle("open");
-    }
-</script>
-
+<!-- JS App Mobile -->
+<script src="js/responsive.js"></script>
 
 </body>
 </html>

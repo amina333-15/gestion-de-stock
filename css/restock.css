@@ -1,0 +1,312 @@
+
+.transaction-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.transaction-actions button {
+    flex: 1;               /* même largeur */
+    padding: 10px 0;       /* même hauteur */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 50px;
+    height: 50px;
+    color: white;
+    background-color: #9C5E3F;
+}
+
+
+.transaction-actions i {
+    font-size: 25px;   /* taille de l’icône */
+    vertical-align: middle;
+}
+
+
+
+/* Bouton Modifier */
+.btn-modifier {
+    margin-left: 50px;
+}
+
+/* Bouton Supprimer */
+.btn-supprimer {
+    margin-right: 50px;
+}
+
+
+
+
+
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #9C5E3F;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+
+
+
+.close-btn:hover {
+    color: #7a4a32;
+    transform: scale(1.1);
+}
+
+
+
+#transaction-detail p {
+    text-align: left;
+    margin-left: 50px;
+}
+
+
+#transaction-title {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+#transaction-title i {
+    font-size: 45px;
+    color: #9C5E3F; /* couleur premium */
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+
+
+
+#no-results i {
+    font-size: 50px;
+    margin-right: 8px;
+    color: #9C5E3F; /* optionnel : couleur premium */
+}
+
+
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 30px;
+
+}
+
+.search-bar input {
+    padding: 0.7rem;
+    width: 100%;
+    border: 1px solid #c8b8a6;
+    border-radius: 6px;
+}
+.search-btn:hover {
+    background-color: #6b4f2c;
+    transform: scale(1.05);
+}
+
+
+
+.search-btn {
+    background-color: #9C5E3F;
+    border: none;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.restock-layout {
+    display: flex;
+    height: calc(100vh - 100px);
+    padding: 20px;
+    gap: 20px;
+}
+
+.transactions-list {
+    width: 35%;
+    background: #fcf8f2;
+    border-radius: 10px;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+.transaction-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.transaction-item:hover {
+    background-color: #f0e8dc;
+}
+
+.transaction-detail {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.floating-add-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #9C5E3F;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+
+
+/* POPUP */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(3px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+
+.popup-box {
+    background: #fcf8f2;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.popup-box h2 {
+    margin-top: 0;
+    color: #6b4f2c;
+}
+
+.popup-box input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: 1px solid #c8b8a6;
+    border-radius: 6px;
+}
+
+.popup-submit {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #9C5E3F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.popup-submit:hover {
+    background-color: #6b4f2c;
+}
+
+
+
+.popup-box input,
+.popup-box textarea,
+.popup-box select {
+    width: 100%;                 /* exactement comme le bouton */
+    padding: 0.8rem;             /* même padding que le bouton */
+    margin-bottom: 1rem;
+    border: 1px solid #c8b8a6;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 1rem;
+    color: #6b4f2c;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;      /* garantit que la largeur inclut le padding */
+}
+
+
+
+
+/* Style du select pour qu'il ressemble aux inputs */
+/* Style du select pour qu'il ressemble aux inputs */
+.popup-box select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%236b4f2c' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+}
+
+
+/* Effet hover */
+.popup-box select:hover {
+    border-color: #9C5E3F;
+}
+
+/* Effet focus */
+.popup-box select:focus {
+    outline: none;
+    border-color: #9C5E3F;
+    box-shadow: 0 0 4px rgba(156, 94, 63, 0.4);
+}
+
+.popup-submit {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #9C5E3F;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.3rem; /* pour que l’icône soit bien visible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.popup-submit:hover {
+    background-color: #6b4f2c;
+    transform: scale(1.05);
+}
+
+.popup-submit i {
+    font-size: 1.6rem; /* taille de l’icône */
+}
